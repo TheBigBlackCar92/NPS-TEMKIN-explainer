@@ -1,0 +1,1352 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>NPS & Temkin — Interactive Guide · Damen</title>
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Serif+Display:ital@0;1&family=DM+Sans:ital,wght@0,300;0,400;0,500;1,400&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{font-family:'DM Sans',sans-serif;background:#F4F7FA;color:#011736;overflow-x:hidden}
+
+:root{
+  --navy:#011736;--blue:#2445B1;--blue-lt:#EEF2FF;
+  --orange:#FF7C51;--orange-lt:#FFF0EB;
+  --green:#23D18A;--green-lt:#EAFAF3;
+  --red:#FF3B3B;--red-lt:#FFF0F0;
+  --yellow:#FEE071;
+  --white:#fff;--bg:#F4F7FA;
+  --card:#fff;--border:#DEE6F0;
+  --muted:#6B7D94;--mid:#3A4D6B;
+  --shadow:0 2px 16px rgba(1,23,54,.08);
+}
+
+/* NAV */
+#progress{position:fixed;top:0;left:0;height:3px;z-index:1000;background:linear-gradient(90deg,var(--orange),var(--blue));width:0;transition:width .15s}
+nav{position:fixed;top:0;left:0;right:0;z-index:900;height:64px;background:var(--white);border-bottom:1px solid var(--border);display:flex;align-items:center;justify-content:space-between;padding:0 40px;box-shadow:0 1px 8px rgba(1,23,54,.06)}
+.nav-logo{display:flex;align-items:center;gap:10px}
+.logo-mark{width:32px;height:32px;background:var(--blue);border-radius:4px;display:flex;align-items:center;justify-content:center}
+.logo-mark svg{width:18px;height:18px;fill:white}
+.logo-text{font-family:'Syne',sans-serif;font-weight:800;font-size:14px;color:var(--navy);letter-spacing:.5px}
+.logo-text span{color:var(--orange)}
+.nav-links{display:flex;gap:2px;align-items:center}
+.nb{font-family:'Syne',sans-serif;font-size:9px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;color:var(--muted);padding:7px 12px;border-radius:4px;cursor:pointer;border:none;background:none;transition:all .2s}
+.nb:hover{color:var(--navy);background:var(--bg)}
+.nb.on{color:var(--blue);background:var(--blue-lt)}
+.lang-sel{font-family:'Syne',sans-serif;font-size:10px;font-weight:700;letter-spacing:1px;padding:6px 12px;border-radius:4px;border:1.5px solid var(--border);background:white;color:var(--navy);cursor:pointer;transition:all .2s;margin-left:14px}
+.lang-sel:hover{border-color:var(--blue);color:var(--blue)}
+.lang-sep{width:1px;height:24px;background:var(--border);margin:0 8px}
+
+/* SECTIONS */
+.sec{min-height:100vh;display:flex;align-items:center;justify-content:center;padding:100px 40px 80px;position:relative}
+.sec-navy{background:var(--navy)}
+.sec-blue{background:var(--blue)}
+.sec-light{background:#EDF1F7}
+.wrap{max-width:1060px;width:100%}
+
+/* TYPE */
+.ey{font-family:'Syne',sans-serif;font-size:9px;font-weight:700;letter-spacing:3px;text-transform:uppercase;color:var(--orange);margin-bottom:10px;display:block}
+.ey.b{color:var(--blue)}.ey.g{color:var(--green)}.ey.r{color:var(--red)}.ey.w{color:rgba(255,255,255,.6)}
+.st{font-family:'DM Serif Display',serif;font-size:clamp(30px,4vw,52px);line-height:1.08;color:var(--navy);margin-bottom:12px}
+.st.wh{color:white}
+.ss{font-size:15px;color:var(--muted);line-height:1.72;max-width:640px;margin-bottom:36px}
+.ss.wh{color:rgba(255,255,255,.7)}
+.rl{width:44px;height:3px;background:var(--orange);margin-bottom:18px;border-radius:2px}
+.rl.b{background:var(--blue)}.rl.g{background:var(--green)}.rl.r{background:var(--red)}.rl.w{background:rgba(255,255,255,.4)}
+
+/* REVEAL */
+.rv{opacity:0;transform:translateY(24px);transition:opacity .6s ease,transform .6s ease}
+.rv.in{opacity:1;transform:none}
+.rv.d1{transition-delay:.1s}.rv.d2{transition-delay:.2s}.rv.d3{transition-delay:.3s}
+.rv.d4{transition-delay:.4s}.rv.d5{transition-delay:.5s}.rv.d6{transition-delay:.6s}
+
+/* HERO - light */
+#hero{background:var(--white);border-bottom:1px solid var(--border)}
+.hgrid{display:grid;grid-template-columns:1fr 1fr;gap:64px;align-items:center}
+.hey{font-family:'Syne',sans-serif;font-size:9px;font-weight:700;letter-spacing:3px;text-transform:uppercase;color:var(--orange);margin-bottom:16px;opacity:0;animation:fu .7s .3s forwards}
+.ht{font-family:'DM Serif Display',serif;font-size:clamp(42px,5.5vw,72px);line-height:1;color:var(--navy);margin-bottom:20px;opacity:0;animation:fu .8s .5s forwards}
+.ht em{color:var(--blue);font-style:normal}
+.hs{font-size:15px;color:var(--muted);line-height:1.7;max-width:440px;margin-bottom:32px;opacity:0;animation:fu .8s .7s forwards}
+.hbtns{display:flex;gap:10px;flex-wrap:wrap;opacity:0;animation:fu .8s .9s forwards}
+.btn{font-family:'Syne',sans-serif;font-size:10px;font-weight:700;letter-spacing:2px;text-transform:uppercase;padding:13px 22px;border-radius:4px;cursor:pointer;transition:all .25s;border:none;display:inline-flex;align-items:center;gap:8px}
+.btn-blue{background:var(--blue);color:white}.btn-blue:hover{background:#1a35a0;transform:translateY(-2px);box-shadow:0 6px 20px rgba(36,69,177,.3)}
+.btn-ghost{background:transparent;color:var(--navy);border:1.5px solid var(--border)}.btn-ghost:hover{border-color:var(--blue);color:var(--blue)}
+
+/* Hero visual */
+.hv{opacity:0;animation:fu 1s .6s forwards}
+.rw{position:relative;width:240px;height:240px;margin:0 auto}
+.rw svg{position:absolute;top:0;left:0;transform:rotate(-90deg)}
+.rc{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center}
+.rn{font-family:'Syne',sans-serif;font-weight:800;font-size:62px;color:var(--navy);line-height:1}
+.rl3{font-family:'Syne',sans-serif;font-size:9px;letter-spacing:3px;color:var(--muted);text-transform:uppercase;margin-top:4px}
+.hdims{display:flex;justify-content:center;gap:10px;margin-top:20px}
+.hd{text-align:center;padding:12px 14px;background:var(--bg);border:1px solid var(--border);border-radius:8px;opacity:0;animation:fu .6s forwards}
+.hd:nth-child(1){animation-delay:1.4s}.hd:nth-child(2){animation-delay:1.6s}.hd:nth-child(3){animation-delay:1.8s}
+.hdn{font-family:'Syne',sans-serif;font-weight:800;font-size:20px}
+.hdl{font-size:9px;color:var(--muted);letter-spacing:1px;text-transform:uppercase;margin-top:2px}
+.sh{position:absolute;bottom:24px;left:50%;transform:translateX(-50%);display:flex;flex-direction:column;align-items:center;gap:5px;opacity:0;animation:fu 1s 2s forwards}
+.sh span{font-family:'Syne',sans-serif;font-size:8px;letter-spacing:3px;color:var(--muted);text-transform:uppercase}
+.sa{width:16px;height:16px;border-right:2px solid var(--muted);border-bottom:2px solid var(--muted);transform:rotate(45deg);animation:bc 1.6s infinite}
+
+/* CARDS */
+.card{background:var(--white);border:1px solid var(--border);border-radius:12px;padding:24px;box-shadow:var(--shadow)}
+.card-blue{background:var(--blue-lt);border-color:rgba(36,69,177,.15)}
+.card-orange{background:var(--orange-lt);border-color:rgba(255,124,81,.2)}
+.card-green{background:var(--green-lt);border-color:rgba(35,209,138,.2)}
+.card-red{background:var(--red-lt);border-color:rgba(255,59,59,.15)}
+.card-navy{background:var(--navy);border-color:transparent;color:white}
+
+/* NPS SCALE */
+.qcard{background:var(--white);border:1px solid var(--border);border-radius:14px;padding:32px;margin-bottom:28px;box-shadow:var(--shadow);position:relative;overflow:visible}
+.qcard::before{content:'"';font-family:'DM Serif Display',serif;font-size:160px;color:rgba(36,69,177,.06);position:absolute;top:-30px;left:16px;line-height:1;pointer-events:none}
+.qt{font-family:'DM Serif Display',serif;font-size:clamp(18px,2.2vw,26px);color:var(--navy);line-height:1.4;position:relative}
+.srow{display:flex;gap:5px;flex-wrap:wrap;margin-top:22px}
+.sb{width:53px;height:53px;border-radius:8px;display:flex;align-items:center;justify-content:center;font-family:'Syne',sans-serif;font-weight:800;font-size:16px;cursor:pointer;border:1.5px solid;transition:all .22s;user-select:none;flex-shrink:0}
+.sb.det{background:var(--red-lt);color:var(--red);border-color:rgba(255,59,59,.3)}
+.sb.pas{background:#FFFBE6;color:#a07800;border-color:rgba(160,120,0,.3)}
+.sb.pro{background:var(--green-lt);color:#0a7048;border-color:rgba(35,209,138,.35)}
+.sb:hover{transform:translateY(-4px) scale(1.08);z-index:2;box-shadow:0 8px 20px rgba(0,0,0,.12)}
+.sb.on{transform:translateY(-6px) scale(1.12)}
+.sb.det.on{box-shadow:0 10px 24px rgba(255,59,59,.2)}
+.sb.pas.on{box-shadow:0 10px 24px rgba(160,120,0,.2)}
+.sb.pro.on{box-shadow:0 10px 24px rgba(35,209,138,.2)}
+.slbls{display:flex;justify-content:space-between;font-size:10px;color:var(--muted);margin-top:7px}
+.nres{background:var(--blue-lt);border:1px solid rgba(36,69,177,.15);border-radius:10px;padding:0;margin-top:0;display:flex;align-items:center;gap:18px;opacity:0;transform:translateY(6px);transition:all .35s;max-height:0;overflow:hidden}
+.nres.on{opacity:1;transform:none;max-height:120px;padding:16px 20px;margin-top:16px;overflow:visible}
+.rbig{font-family:'Syne',sans-serif;font-weight:800;font-size:44px;line-height:1}
+.rname{font-family:'Syne',sans-serif;font-weight:700;font-size:16px}
+.rdesc{font-size:12px;color:var(--muted);margin-top:3px;line-height:1.5}
+
+/* THREE GROUPS */
+.gg{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;margin-top:24px}
+.gc{border-radius:12px;padding:22px 18px;border:1.5px solid;transition:transform .3s,box-shadow .3s;background:white}
+.gc:hover{transform:translateY(-4px);box-shadow:var(--shadow)}
+.gc.det{border-color:rgba(255,59,59,.25)}
+.gc.pas{border-color:rgba(160,120,0,.25)}
+.gc.pro{border-color:rgba(35,209,138,.3)}
+.gc-top{height:4px;border-radius:2px;margin-bottom:16px}
+.gc.det .gc-top{background:var(--red)}
+.gc.pas .gc-top{background:var(--yellow)}
+.gc.pro .gc-top{background:var(--green)}
+.gr{font-family:'Syne',sans-serif;font-size:8px;font-weight:700;letter-spacing:2px;margin-bottom:6px}
+.gc.det .gr{color:var(--red)}.gc.pas .gr{color:#a07800}.gc.pro .gr{color:#0a7048}
+.gn{font-family:'DM Serif Display',serif;font-size:24px;margin-bottom:8px}
+.gc.det .gn{color:var(--red)}.gc.pas .gn{color:#a07800}.gc.pro .gn{color:#0a7048}
+.gd{font-size:12px;color:var(--muted);line-height:1.6;margin-bottom:12px}
+.gq{background:var(--bg);border-radius:6px;padding:11px;font-size:11px;color:var(--mid);font-style:italic;line-height:1.5;border-left:3px solid var(--border)}
+.ga{font-style:normal;color:var(--muted);font-size:9px;margin-top:5px;display:block}
+
+/* FORMULA */
+.frow{display:flex;align-items:center;gap:12px;flex-wrap:wrap;margin:28px 0 20px}
+.fb{flex:1;min-width:110px;border-radius:10px;padding:18px;text-align:center;border:1.5px solid;background:white}
+.fb.pro{border-color:rgba(35,209,138,.3);background:var(--green-lt)}
+.fb.det{border-color:rgba(255,59,59,.25);background:var(--red-lt)}
+.fb.res{background:var(--blue);border-color:var(--blue)}
+.fbl{font-family:'Syne',sans-serif;font-size:8px;letter-spacing:2px;text-transform:uppercase;margin-bottom:4px}
+.fb.pro .fbl{color:#0a7048}.fb.det .fbl{color:var(--red)}.fb.res .fbl{color:rgba(255,255,255,.6)}
+.fbn{font-family:'Syne',sans-serif;font-weight:800;font-size:40px;line-height:1}
+.fb.pro .fbn{color:#0a7048}.fb.det .fbn{color:var(--red)}.fb.res .fbn{color:white}
+.fbs{font-size:10px;color:var(--muted);margin-top:4px}
+.fb.res .fbs{color:rgba(255,255,255,.5)}
+.fop{font-family:'Syne',sans-serif;font-size:32px;font-weight:800;color:var(--muted);flex-shrink:0}
+
+/* CALCULATOR */
+.calc{background:white;border:1px solid var(--border);border-radius:12px;padding:24px;box-shadow:var(--shadow)}
+.ctit{font-family:'Syne',sans-serif;font-size:9px;letter-spacing:2px;text-transform:uppercase;color:var(--orange);margin-bottom:16px}
+.slr{display:flex;align-items:center;gap:14px;margin-bottom:12px}
+.sll{width:86px;font-family:'Syne',sans-serif;font-size:10px;font-weight:700;flex-shrink:0}
+.sll.pro{color:#0a7048}.sll.det{color:var(--red)}
+input[type=range]{flex:1;height:4px;appearance:none;border-radius:2px;outline:none;cursor:pointer}
+input[type=range].pro{accent-color:var(--green);background:rgba(35,209,138,.2)}
+input[type=range].det{accent-color:var(--red);background:rgba(255,59,59,.15)}
+.slv{width:40px;text-align:right;font-family:'Syne',sans-serif;font-weight:800;font-size:14px;flex-shrink:0}
+.slv.pro{color:#0a7048}.slv.det{color:var(--red)}
+.cres{display:flex;align-items:center;gap:18px;padding-top:16px;border-top:1px solid var(--border);margin-top:4px}
+.cbig{font-family:'Syne',sans-serif;font-weight:800;font-size:52px;line-height:1}
+.cgr{font-family:'DM Serif Display',serif;font-size:19px}
+.cnt{font-size:11px;color:var(--muted);margin-top:2px}
+.gps{display:flex;gap:6px;flex-wrap:wrap;margin-top:14px}
+.gp{padding:5px 12px;border-radius:30px;font-family:'Syne',sans-serif;font-size:9px;font-weight:700;letter-spacing:1px;border:1.5px solid}
+
+/* TEMKIN 7-PT on dark */
+.t7c{background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.1);border-radius:14px;padding:28px;margin-bottom:28px}
+.t7i{font-size:14px;color:rgba(255,255,255,.75);line-height:1.75;margin-bottom:24px}
+.t7i strong{color:white}
+.t7w{display:grid;grid-template-columns:1fr 1fr;gap:28px;align-items:start}
+.t7leg{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:12px}
+.t7l{padding:5px 11px;border-radius:20px;font-family:'Syne',sans-serif;font-size:9px;font-weight:700;letter-spacing:1px;border:1.5px solid}
+.t7l.det{color:#ff7070;border-color:rgba(255,59,59,.4);background:rgba(255,59,59,.12)}
+.t7l.pas{color:#f0c040;border-color:rgba(254,224,113,.4);background:rgba(254,224,113,.1)}
+.t7l.pro{color:#4de8a4;border-color:rgba(35,209,138,.4);background:rgba(35,209,138,.12)}
+.t7hint{font-family:'Syne',sans-serif;font-size:8px;letter-spacing:2px;text-transform:uppercase;color:rgba(255,255,255,.4);margin-bottom:8px}
+.t7row{display:flex;gap:6px}
+.t7b{width:56px;height:56px;border-radius:8px;display:flex;align-items:center;justify-content:center;font-family:'Syne',sans-serif;font-weight:800;font-size:17px;cursor:pointer;border:1.5px solid;transition:all .22s;user-select:none;flex-shrink:0}
+.t7b.det{background:rgba(255,59,59,.12);color:#ff7070;border-color:rgba(255,59,59,.3)}
+.t7b.pas{background:rgba(254,224,113,.1);color:#f0c040;border-color:rgba(254,224,113,.35)}
+.t7b.pro{background:rgba(35,209,138,.12);color:#4de8a4;border-color:rgba(35,209,138,.3)}
+.t7b:hover{transform:translateY(-3px) scale(1.08);z-index:2}
+.t7b.on{transform:translateY(-5px) scale(1.12)}
+.t7rlbls{display:flex;justify-content:space-between;font-size:9px;color:rgba(255,255,255,.35);margin-top:6px;margin-bottom:14px}
+.t7res{background:rgba(36,69,177,.3);border:1px solid rgba(36,69,177,.4);border-radius:9px;padding:14px 18px;opacity:0;transform:translateY(5px);transition:all .3s;min-height:0;max-height:0;overflow:hidden;padding:0;margin:0}
+.t7res.on{opacity:1;transform:none;max-height:200px;padding:14px 18px;margin:0;overflow:visible}
+.t7rn{font-family:'Syne',sans-serif;font-weight:700;font-size:15px;margin-bottom:3px;color:white}
+.t7rd{font-size:12px;color:rgba(255,255,255,.6);line-height:1.5}
+.t7fb{background:rgba(255,255,255,.06);border-radius:10px;padding:18px;border:1px solid rgba(255,255,255,.08)}
+.t7ft{font-family:'Syne',sans-serif;font-size:8px;letter-spacing:2px;text-transform:uppercase;color:rgba(255,255,255,.4);margin-bottom:12px}
+.t7fr{display:flex;align-items:center;gap:8px;flex-wrap:wrap;margin-bottom:8px}
+.t7fbl{flex:1;min-width:68px;text-align:center;padding:10px 6px;border-radius:7px}
+.t7fbl.p{background:rgba(35,209,138,.15)}.t7fbl.a{background:rgba(254,224,113,.1)}.t7fbl.d{background:rgba(255,59,59,.15)}.t7fbl.r{background:rgba(36,69,177,.5);border:1px solid rgba(36,69,177,.6)}
+.t7fbn{font-family:'Syne',sans-serif;font-weight:800;font-size:18px;color:white}
+.t7fbl.p .t7fbn{color:#4de8a4}.t7fbl.a .t7fbn{color:#f0c040}.t7fbl.d .t7fbn{color:#ff7070}
+.t7fbl2{font-size:8px;color:rgba(255,255,255,.45);margin-top:2px}
+.t7fo{font-family:'Syne',sans-serif;font-size:17px;font-weight:800;color:rgba(255,255,255,.3);flex-shrink:0}
+.t7note{font-size:11px;color:rgba(255,255,255,.55);line-height:1.6;margin-top:12px;padding:10px 14px;background:rgba(255,124,81,.1);border-radius:7px;border-left:3px solid var(--orange)}
+
+/* DIM TABS */
+.dtabs{display:flex;gap:8px;margin-bottom:18px;flex-wrap:wrap}
+.dtab{font-family:'Syne',sans-serif;font-size:10px;font-weight:700;letter-spacing:1px;text-transform:uppercase;padding:10px 17px;border-radius:6px;cursor:pointer;border:1.5px solid;background:white;color:var(--muted);transition:all .25s}
+.dtab.ts{background:var(--blue-lt);border-color:var(--blue);color:var(--blue)}
+.dtab.te{background:var(--green-lt);border-color:var(--green);color:#0a7048}
+.dtab.tm{background:var(--orange-lt);border-color:var(--orange);color:var(--orange)}
+.dtab:not(.ts):not(.te):not(.tm){border-color:var(--border)}
+.dp{display:none}
+.dp.on{display:grid;grid-template-columns:1fr 1fr;gap:24px;align-items:start;animation:fu .35s ease}
+.dq{font-family:'DM Serif Display',serif;font-size:clamp(17px,2vw,22px);line-height:1.35;margin-bottom:14px;color:var(--navy)}
+.dp-s .dq{color:var(--blue)}.dp-e .dq{color:#0a7048}.dp-m .dq{color:var(--orange)}
+.dd{font-size:13px;color:var(--muted);line-height:1.7;margin-bottom:14px}
+.di{background:var(--bg);border-radius:8px;padding:14px 16px;border-left:3px solid;margin-bottom:10px}
+.dp-s .di{border-color:var(--blue)}.dp-e .di{border-color:var(--green)}.dp-m .di{border-color:var(--orange)}
+.dil{font-family:'Syne',sans-serif;font-size:8px;letter-spacing:2px;text-transform:uppercase;color:var(--muted);margin-bottom:3px}
+.dit{font-size:12.5px;color:var(--mid);line-height:1.6}
+.dsim{background:white;border:1px solid var(--border);border-radius:10px;padding:20px;box-shadow:var(--shadow)}
+.dsimtit{font-family:'Syne',sans-serif;font-size:9px;letter-spacing:2px;text-transform:uppercase;color:var(--muted);margin-bottom:12px}
+input[type=range].dr{width:100%;height:5px;appearance:none;border-radius:3px;outline:none;cursor:pointer;margin-bottom:8px}
+.dr.ds{accent-color:var(--blue);background:rgba(36,69,177,.15)}
+.dr.de{accent-color:var(--green);background:rgba(35,209,138,.15)}
+.dr.dm{accent-color:var(--orange);background:rgba(255,124,81,.15)}
+.dsout{text-align:center;padding:12px;background:var(--bg);border-radius:8px;margin-top:8px;border:1px solid var(--border)}
+.dsn{font-family:'Syne',sans-serif;font-weight:800;font-size:36px}
+.dsl{font-size:10px;color:var(--muted);margin-top:2px}
+.dsbar{height:5px;border-radius:3px;margin-top:8px;transition:width .4s}
+.dint{font-size:11px;color:var(--muted);line-height:1.6;margin-top:10px;padding:9px 11px;background:var(--bg);border-radius:6px;border:1px solid var(--border)}
+.drlbls{display:flex;justify-content:space-between;font-size:9px;color:var(--muted);margin-bottom:6px}
+
+/* COMBINED - light */
+.corr{background:var(--blue);border-radius:14px;padding:26px 32px;display:flex;align-items:center;gap:26px;margin-bottom:28px;box-shadow:0 4px 24px rgba(36,69,177,.25)}
+.corrn{font-family:'Syne',sans-serif;font-weight:800;font-size:58px;color:var(--orange);flex-shrink:0;line-height:1}
+.corrh{font-family:'Syne',sans-serif;font-weight:700;font-size:14px;color:white;margin-bottom:4px}
+.corrp{font-size:12px;color:rgba(255,255,255,.65);line-height:1.6}
+.cgrid{display:grid;grid-template-columns:1fr 1fr;gap:20px;margin-bottom:28px}
+.ccard{background:white;border:1px solid var(--border);border-radius:12px;padding:22px;transition:all .3s;box-shadow:var(--shadow)}
+.ccard:hover{border-color:var(--blue);transform:translateY(-3px);box-shadow:0 6px 24px rgba(36,69,177,.1)}
+.cchdr{display:flex;align-items:center;gap:12px;margin-bottom:16px}
+.cci{width:38px;height:38px;border-radius:9px;display:flex;align-items:center;justify-content:center;font-size:17px;flex-shrink:0}
+.cci.b{background:var(--blue-lt)}.cci.o{background:var(--orange-lt)}
+.cct{font-family:'Syne',sans-serif;font-weight:700;font-size:13px;color:var(--navy)}
+.ccs{font-size:10px;color:var(--muted);margin-top:1px}
+.cl{list-style:none}
+.cl li{display:flex;gap:9px;padding:8px 0;border-bottom:1px solid var(--border);font-size:12px;color:var(--mid);line-height:1.5;align-items:flex-start}
+.cl li:last-child{border-bottom:none}
+.cl li::before{flex-shrink:0;font-weight:700;margin-top:1px}
+.cl li.ck::before{content:'✓';color:#0a7048}
+.cl li.cx::before{content:'✗';color:var(--red)}
+
+/* SCENARIO — FIXED */
+.sctabs{display:flex;gap:7px;flex-wrap:wrap;margin-bottom:16px}
+.sct{font-family:'Syne',sans-serif;font-size:9px;font-weight:700;letter-spacing:1px;text-transform:uppercase;padding:9px 15px;border-radius:6px;cursor:pointer;border:1.5px solid var(--border);background:white;color:var(--muted);transition:all .25s;white-space:nowrap}
+.sct:hover{color:var(--blue);border-color:var(--blue)}
+.sct.on{background:var(--blue);border-color:var(--blue);color:white}
+.scwrap{width:100%;overflow:hidden}
+.scp{display:none;animation:fu .35s ease}
+.scp.on{display:block}
+/* Three-column inside — use table-like approach to prevent rotation bug */
+.sc3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:16px;width:100%;align-items:start}
+.scol{background:white;border:1px solid var(--border);border-radius:10px;padding:18px;box-shadow:var(--shadow);min-width:0;overflow:hidden}
+.schdr{font-family:'Syne',sans-serif;font-size:8px;font-weight:700;letter-spacing:2px;text-transform:uppercase;margin-bottom:10px;padding-bottom:8px;border-bottom:1px solid var(--border)}
+.scol.sn .schdr{color:var(--blue)}.scol.so .schdr{color:var(--orange)}.scol.sca .schdr{color:#0a7048}
+.scsit{background:var(--bg);border-radius:7px;padding:11px;font-family:'DM Serif Display',serif;font-size:14px;color:var(--navy);margin-bottom:12px;line-height:1.4}
+.sct2{font-size:12px;color:var(--muted);line-height:1.65;word-wrap:break-word;overflow-wrap:break-word}
+
+/* STEPS */
+.sgrid{display:grid;grid-template-columns:repeat(3,1fr);gap:16px}
+.step{background:white;border:1px solid var(--border);border-radius:12px;padding:22px 18px;position:relative;transition:all .3s;box-shadow:var(--shadow)}
+.step:hover{transform:translateY(-4px);border-color:var(--blue);box-shadow:0 8px 28px rgba(36,69,177,.1)}
+.stepbg{font-family:'Syne',sans-serif;font-weight:800;font-size:60px;color:rgba(36,69,177,.05);position:absolute;top:8px;right:12px;line-height:1}
+.stepic{width:36px;height:36px;border-radius:9px;display:flex;align-items:center;justify-content:center;font-size:16px;margin-bottom:12px;background:var(--blue-lt)}
+.steptt{font-family:'Syne',sans-serif;font-weight:700;font-size:12px;color:var(--navy);margin-bottom:5px}
+.stepd{font-size:11px;color:var(--muted);line-height:1.65;margin-bottom:9px}
+.stept{background:var(--blue-lt);border-left:3px solid var(--blue);padding:8px 10px;border-radius:0 5px 5px 0;font-size:10px;color:var(--blue);line-height:1.5}
+
+/* PITFALLS */
+.pgrid{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+.pit{background:white;border:1px solid var(--border);border-radius:10px;padding:20px;display:flex;gap:14px;align-items:flex-start;transition:border-color .3s;box-shadow:var(--shadow)}
+.pit:hover{border-color:var(--red)}
+.pico{width:32px;height:32px;border-radius:50%;background:var(--red-lt);border:1px solid rgba(255,59,59,.3);display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:800;color:var(--red);flex-shrink:0}
+.ptt{font-family:'Syne',sans-serif;font-weight:700;font-size:12px;color:var(--navy);margin-bottom:4px}
+.pd{font-size:11px;color:var(--muted);line-height:1.6;margin-bottom:8px}
+.pf{background:var(--green-lt);border:1px solid rgba(35,209,138,.25);border-radius:5px;padding:7px 10px;font-size:10px;color:#0a7048;line-height:1.5}
+.pf::before{content:'✓  ';font-weight:700}
+
+/* QUIZ */
+#quiz{background:var(--navy)}
+.quiz-wrap{max-width:780px;margin:0 auto;width:100%}
+.qz-progress{width:100%;height:4px;background:rgba(255,255,255,.1);border-radius:2px;margin-bottom:32px;overflow:hidden}
+.qz-progress-bar{height:100%;background:linear-gradient(90deg,var(--orange),var(--green));border-radius:2px;transition:width .4s ease}
+.qz-card{background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.1);border-radius:16px;padding:36px;backdrop-filter:blur(8px)}
+.qz-num{font-family:'Syne',sans-serif;font-size:9px;letter-spacing:2px;text-transform:uppercase;color:rgba(255,255,255,.4);margin-bottom:12px}
+.qz-q{font-family:'DM Serif Display',serif;font-size:clamp(20px,2.5vw,28px);color:white;line-height:1.3;margin-bottom:28px}
+.qz-opts{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:24px}
+.qz-opt{background:rgba(255,255,255,.06);border:1.5px solid rgba(255,255,255,.12);border-radius:10px;padding:16px 18px;cursor:pointer;transition:all .25s;font-size:14px;color:rgba(255,255,255,.85);line-height:1.4;text-align:left}
+.qz-opt:hover{background:rgba(255,255,255,.1);border-color:rgba(255,255,255,.25);color:white}
+.qz-opt.correct{background:rgba(35,209,138,.15);border-color:var(--green);color:#4de8a4}
+.qz-opt.wrong{background:rgba(255,59,59,.12);border-color:var(--red);color:#ff7070}
+.qz-opt.disabled{cursor:default;pointer-events:none}
+.qz-feedback{padding:16px 20px;border-radius:10px;font-size:13px;line-height:1.6;margin-bottom:20px;display:none}
+.qz-feedback.show{display:block}
+.qz-feedback.ok{background:rgba(35,209,138,.12);border:1px solid rgba(35,209,138,.3);color:#4de8a4}
+.qz-feedback.bad{background:rgba(255,59,59,.1);border:1px solid rgba(255,59,59,.25);color:#ff8080}
+.qz-feedback strong{color:white}
+.qz-next{font-family:'Syne',sans-serif;font-size:10px;font-weight:700;letter-spacing:2px;text-transform:uppercase;padding:12px 24px;background:var(--orange);color:white;border:none;border-radius:6px;cursor:pointer;transition:all .25s;display:none}
+.qz-next:hover{background:#ff9672;transform:translateY(-2px)}
+.qz-next.show{display:inline-flex}
+.qz-score{text-align:center;padding:40px 20px;display:none}
+.qz-score.show{display:block}
+.qz-score-big{font-family:'Syne',sans-serif;font-weight:800;font-size:80px;color:var(--orange);line-height:1;margin-bottom:8px}
+.qz-score-label{font-family:'DM Serif Display',serif;font-size:28px;color:white;margin-bottom:12px}
+.qz-score-sub{font-size:14px;color:rgba(255,255,255,.55);margin-bottom:28px}
+.qz-restart{font-family:'Syne',sans-serif;font-size:10px;font-weight:700;letter-spacing:2px;text-transform:uppercase;padding:12px 28px;background:var(--orange);color:white;border:none;border-radius:6px;cursor:pointer;transition:all .25s}
+.qz-restart:hover{background:#ff9672}
+
+/* FOOTER */
+footer{background:var(--navy);padding:44px 40px 28px;border-top:1px solid rgba(255,255,255,.06);text-align:center}
+.ftl{font-family:'Syne',sans-serif;font-weight:800;font-size:17px;color:white;margin-bottom:3px}
+.ftl span{color:var(--orange)}
+.fts{font-size:10px;color:rgba(255,255,255,.35);margin-bottom:20px;letter-spacing:1px}
+.ftnav{display:flex;gap:16px;justify-content:center;flex-wrap:wrap;margin-bottom:18px}
+.ftnav button{font-family:'Syne',sans-serif;font-size:9px;letter-spacing:2px;text-transform:uppercase;color:rgba(255,255,255,.35);background:none;border:none;cursor:pointer;transition:color .2s}
+.ftnav button:hover{color:var(--orange)}
+.ftc{font-size:10px;color:rgba(255,255,255,.15)}
+.ftsr{font-size:9px;color:rgba(255,255,255,.12);margin-top:3px}
+
+/* TEMKIN STATS */
+.tsr{display:flex;gap:12px;flex-wrap:wrap;margin-top:20px}
+.ts2{flex:1;min-width:100px;background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.1);border-radius:8px;padding:14px;text-align:center}
+.ts2n{font-family:'Syne',sans-serif;font-weight:800;font-size:24px;color:var(--orange)}
+.ts2l{font-size:10px;color:rgba(255,255,255,.45);margin-top:2px;line-height:1.3}
+
+/* ANIMS */
+@keyframes fu{from{opacity:0;transform:translateY(22px)}to{opacity:1;transform:none}}
+@keyframes bc{0%,100%{transform:rotate(45deg) translateY(0)}50%{transform:rotate(45deg) translateY(5px)}}
+
+/* MOBILE NAV */
+.mob-menu-btn{display:none;flex-direction:column;gap:5px;cursor:pointer;padding:8px;border:none;background:none;flex-shrink:0}
+.mob-menu-btn span{display:block;width:22px;height:2px;background:var(--navy);border-radius:1px;transition:all .25s}
+.mob-nav{display:none;position:fixed;top:64px;left:0;right:0;background:var(--white);border-bottom:2px solid var(--border);z-index:890;padding:12px 16px 16px;box-shadow:0 8px 24px rgba(1,23,54,.12)}
+.mob-nav.open{display:block}
+.mob-nav-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:6px;margin-bottom:12px}
+.mob-nb{font-family:'Syne',sans-serif;font-size:9px;font-weight:700;letter-spacing:1px;text-transform:uppercase;color:var(--muted);padding:8px 4px;border-radius:4px;cursor:pointer;border:none;background:var(--bg);text-align:center;transition:all .2s;width:100%}
+.mob-nb:hover,.mob-nb.on{color:var(--blue);background:var(--blue-lt)}
+.mob-lang-row{display:flex;gap:6px;justify-content:center;padding-top:10px;border-top:1px solid var(--border)}
+.mob-lang-btn{font-family:'Syne',sans-serif;font-size:11px;font-weight:700;padding:7px 14px;border-radius:4px;border:1.5px solid var(--border);background:white;color:var(--navy);cursor:pointer;transition:all .2s;flex:1;text-align:center}
+.mob-lang-btn:hover{border-color:var(--blue);color:var(--blue)}
+.mob-lang-btn.active{border-color:var(--blue);color:var(--blue);background:var(--blue-lt)}
+
+/* RESPONSIVE */
+@media(max-width:860px){
+  nav{padding:0 16px}
+  .nav-links{display:none}
+  .mob-menu-btn{display:flex}
+  .sec{padding:80px 16px 48px}
+  .wrap{padding:0}
+  .hgrid,.cgrid{grid-template-columns:1fr}
+  .gg,.sgrid,.pgrid,.qz-opts{grid-template-columns:1fr}
+  .t7w{grid-template-columns:1fr}
+  .sc3{grid-template-columns:1fr}
+  .dp.on{grid-template-columns:1fr}
+  .rw{width:180px;height:180px}
+  .rn{font-size:48px}
+  .corr{flex-direction:column;text-align:center}
+  .corrn{font-size:40px}
+  .frow{flex-direction:row !important;flex-wrap:nowrap !important;gap:4px;align-items:center}
+  .fb{padding:10px 5px;min-width:0;flex:1}
+  .fbn{font-size:22px !important;line-height:1}
+  .fbs{font-size:8px}
+  .fbl{font-size:7px;letter-spacing:0}
+  .fop{font-size:18px;flex-shrink:0}
+  .srow{display:grid !important;grid-template-columns:repeat(11,1fr) !important;gap:2px !important;flex-wrap:unset !important}
+  .sb{width:auto !important;height:auto !important;aspect-ratio:1/1 !important;min-width:0 !important;border-radius:5px;font-size:clamp(10px,2.8vw,16px) !important;padding:0 !important}
+  .t7row{display:grid !important;grid-template-columns:repeat(7,1fr) !important;gap:3px !important}
+  .t7b{width:auto !important;height:auto !important;aspect-ratio:1/1 !important;min-width:0 !important;border-radius:5px;font-size:clamp(12px,4vw,17px) !important;padding:0 !important}
+  .qz-opts{grid-template-columns:1fr}
+  .sh{display:none}
+  .hdims{gap:6px}
+  .qcard{padding:20px}
+}
+@media(max-width:400px){
+  .fbn{font-size:18px !important}
+  .fop{font-size:14px !important}
+  .sb{font-size:10px !important}
+}
+</style>
+</head>
+<body>
+<div id="progress"></div>
+<nav>
+  <div class="nav-logo">
+    <div class="logo-mark"><svg viewBox="0 0 20 20"><rect x="2" y="2" width="7" height="7" rx="1"/><rect x="11" y="2" width="7" height="7" rx="1"/><rect x="2" y="11" width="7" height="7" rx="1"/><rect x="11" y="11" width="7" height="7" rx="1"/></svg></div>
+    <div class="logo-text">DAMEN <span>·</span> CX Guide</div>
+  </div>
+  <div class="nav-links">
+    <button class="nb on" onclick="goto('hero')" data-key="nav_home">Home</button>
+    <button class="nb" onclick="goto('nps')" data-key="nav_nps">NPS</button>
+    <button class="nb" onclick="goto('temkin')" data-key="nav_temkin">Temkin</button>
+    <button class="nb" onclick="goto('combined')" data-key="nav_combined">Combined</button>
+    <button class="nb" onclick="goto('practical')" data-key="nav_practical">How to Use</button>
+    <button class="nb" onclick="goto('pitfalls')" data-key="nav_pitfalls">Pitfalls</button>
+    <button class="nb" onclick="goto('quiz')" data-key="nav_quiz">Quiz</button>
+    <div class="lang-sep"></div>
+    <button class="lang-sel" onclick="setLang('en')">🇬🇧 EN</button>
+    <button class="lang-sel" onclick="setLang('nl')">🇳🇱 NL</button>
+    <button class="lang-sel" onclick="setLang('es')">🇪🇸 ES</button>
+    <button class="lang-sel" onclick="setLang('fr')">🇫🇷 FR</button>
+  </div>
+  <!-- HAMBURGER -->
+  <button class="mob-menu-btn" id="mobBtn" onclick="toggleMobMenu()" aria-label="Menu">
+    <span></span><span></span><span></span>
+  </button>
+</nav>
+<!-- MOBILE NAV DROPDOWN -->
+<div class="mob-nav" id="mobNav">
+  <div class="mob-nav-grid">
+    <button class="mob-nb on" onclick="mobileGoto('hero')" data-key="nav_home">Home</button>
+    <button class="mob-nb" onclick="mobileGoto('nps')" data-key="nav_nps">NPS</button>
+    <button class="mob-nb" onclick="mobileGoto('temkin')" data-key="nav_temkin">Temkin</button>
+    <button class="mob-nb" onclick="mobileGoto('combined')" data-key="nav_combined">Combined</button>
+    <button class="mob-nb" onclick="mobileGoto('practical')" data-key="nav_practical">How to Use</button>
+    <button class="mob-nb" onclick="mobileGoto('pitfalls')" data-key="nav_pitfalls">Pitfalls</button>
+    <button class="mob-nb" onclick="mobileGoto('quiz')" data-key="nav_quiz">Quiz</button>
+  </div>
+  <div class="mob-lang-row">
+    <button class="mob-lang-btn active" onclick="setLangMob(this,'en')">🇬🇧 EN</button>
+    <button class="mob-lang-btn" onclick="setLangMob(this,'nl')">🇳🇱 NL</button>
+    <button class="mob-lang-btn" onclick="setLangMob(this,'es')">🇪🇸 ES</button>
+    <button class="mob-lang-btn" onclick="setLangMob(this,'fr')">🇫🇷 FR</button>
+  </div>
+</div>
+
+<!-- HERO -->
+<section class="sec" id="hero">
+  <div class="wrap">
+    <div class="hgrid">
+      <div>
+        <div class="hey" data-key="hero_eyebrow">Interactive Learning Guide · Damen Shipyards Group</div>
+        <h1 class="ht">NPS &amp;<br><em>Temkin</em><br><span data-key="hero_title_3">Explained</span></h1>
+        <p class="hs" data-key="hero_sub">Two of the most powerful CX frameworks — what they measure, how they work, and how to use them together to drive real improvement.</p>
+        <div class="hbtns">
+          <button class="btn btn-blue" onclick="goto('nps')" data-key="hero_cta1">Start with NPS ↓</button>
+          <button class="btn btn-ghost" onclick="goto('combined')" data-key="hero_cta2">Jump to Combined</button>
+        </div>
+      </div>
+      <div class="hv">
+        <div class="rw">
+          <svg width="240" height="240" viewBox="0 0 240 240">
+            <circle cx="120" cy="120" r="100" fill="none" stroke="#DEE6F0" stroke-width="14"/>
+            <circle id="ringC" cx="120" cy="120" r="100" fill="none" stroke="url(#rg)" stroke-width="14"
+              stroke-linecap="round" stroke-dasharray="628" stroke-dashoffset="628"/>
+            <defs><linearGradient id="rg" x1="0%" y1="0%" x2="100%" y2="0%">
+              <stop offset="0%" stop-color="#2445B1"/><stop offset="100%" stop-color="#23D18A"/>
+            </linearGradient></defs>
+          </svg>
+          <div class="rc"><div class="rn">+48</div><div class="rl3" data-key="nps_score_label">NPS Score</div></div>
+        </div>
+        <div class="hdims">
+          <div class="hd"><div class="hdn" style="color:var(--blue)">78%</div><div class="hdl" data-key="dim_success">Success</div></div>
+          <div class="hd"><div class="hdn" style="color:#0a7048">65%</div><div class="hdl" data-key="dim_effort">Effort</div></div>
+          <div class="hd"><div class="hdn" style="color:var(--orange)">71%</div><div class="hdl" data-key="dim_emotion">Emotion</div></div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="sh"><span data-key="scroll_hint">Scroll to explore</span><div class="sa"></div></div>
+</section>
+
+<!-- NPS -->
+<section class="sec sec-light" id="nps">
+  <div class="wrap">
+    <span class="ey rv" data-key="part01_label">Part 01 — Net Promoter Score</span>
+    <div class="rl rv d1"></div>
+    <h2 class="st rv d2" data-key="nps_title">One question. A loyalty signal.</h2>
+    <p class="ss rv d3" data-key="nps_sub">Introduced by Fred Reichheld in 2003 (Bain &amp; Company / HBR). Customers rate on a <strong>0–10 scale</strong>: 0–6 = Detractor, 7–8 = Passive, 9–10 = Promoter. NPS = %Promoters − %Detractors.</p>
+    <div class="qcard rv d2">
+      <p class="qt" data-key="nps_question">"How likely is it that you would recommend our organisation to a friend or colleague?"</p>
+      <div class="srow" id="npsRow">
+        <div class="sb det" data-n="0">0</div><div class="sb det" data-n="1">1</div><div class="sb det" data-n="2">2</div><div class="sb det" data-n="3">3</div><div class="sb det" data-n="4">4</div><div class="sb det" data-n="5">5</div><div class="sb det" data-n="6">6</div><div class="sb pas" data-n="7">7</div><div class="sb pas" data-n="8">8</div><div class="sb pro" data-n="9">9</div><div class="sb pro" data-n="10">10</div>
+      </div>
+      <div class="slbls"><span data-key="scale_low">Not at all likely</span><span data-key="scale_high">Extremely likely</span></div>
+      <div class="nres" id="nRes"><div><div class="rbig" id="rSc">—</div><div style="font-size:9px;color:var(--muted);letter-spacing:1px;text-transform:uppercase" data-key="score_label">Score</div></div><div><div class="rname" id="rGr">—</div><div class="rdesc" id="rDe" data-key="click_score">Click a score above to see what it means.</div></div></div>
+    </div>
+    <span class="ey rv b" data-key="three_groups_label">The Three Groups</span>
+    <div class="gg">
+      <div class="gc det rv d2"><div class="gc-top"></div><div class="gr" data-key="det_range">SCORE 0–6 · DETRACTORS</div><div class="gn" data-key="det_name">Detractors</div><p class="gd" data-key="det_desc">Unhappy customers who actively spread negative word-of-mouth. They slow growth and damage reputation.</p><div class="gq">"<span data-key="det_quote">I contacted support 3 times and my issue is still unresolved. I would not recommend this to anyone.</span>"<span class="ga" data-key="det_author">— Customer, telecom sector</span></div></div>
+      <div class="gc pas rv d3"><div class="gc-top"></div><div class="gr" data-key="pas_range">SCORE 7–8 · PASSIVES</div><div class="gn" data-key="pas_name">Passives</div><p class="gd" data-key="pas_desc">Satisfied but unenthusiastic. They switch easily to a competitor when a better offer comes along.</p><div class="gq">"<span data-key="pas_quote">It works fine, no complaints. Spectacular? Not really. I just use it.</span>"<span class="ga" data-key="pas_author">— Customer, software sector</span></div></div>
+      <div class="gc pro rv d4"><div class="gc-top"></div><div class="gr" data-key="pro_range">SCORE 9–10 · PROMOTERS</div><div class="gn" data-key="pro_name">Promoters</div><p class="gd" data-key="pro_desc">Loyal fans who actively recommend you. Your cheapest and most effective marketing channel.</p><div class="gq">"<span data-key="pro_quote">I have already referred at least 5 friends. Your service is truly exceptional.</span>"<span class="ga" data-key="pro_author">— Customer, e-commerce sector</span></div></div>
+    </div>
+    <span class="ey rv b" style="margin-top:36px" data-key="formula_label">The Formula</span>
+    <div class="frow rv d2">
+      <div class="fb pro"><div class="fbl" data-key="promoters">Promoters</div><div class="fbn">62%</div><div class="fbs" data-key="of_respondents">of respondents</div></div>
+      <div class="fop">−</div>
+      <div class="fb det"><div class="fbl" data-key="detractors">Detractors</div><div class="fbn">14%</div><div class="fbs" data-key="of_respondents2">of respondents</div></div>
+      <div class="fop">=</div>
+      <div class="fb res"><div class="fbl" data-key="nps_score_lbl">NPS Score</div><div class="fbn">+48</div><div class="fbs" data-key="excellent">Excellent</div></div>
+    </div>
+    <div class="calc rv d3">
+      <div class="ctit" data-key="calc_title">🧮 Live NPS Calculator — drag the sliders</div>
+      <div class="slr"><span class="sll pro" data-key="promoters2">Promoters</span><input type="range" class="pro" id="pSl" min="0" max="100" value="50"><span class="slv pro" id="pV">50%</span></div>
+      <div class="slr"><span class="sll det" data-key="detractors2">Detractors</span><input type="range" class="det" id="dSl" min="0" max="100" value="15"><span class="slv det" id="dV">15%</span></div>
+      <div class="cres"><div><div class="cbig" id="cNum">+35</div><div style="font-size:10px;color:var(--muted)" data-key="nps_score_lbl2">NPS Score</div></div><div><div class="cgr" id="cGr" style="color:#0a7048">Good ✓</div><div class="cnt" id="cNt" data-key="calc_above_avg">Above the global average of +33</div></div></div>
+      <div class="gps">
+        <div class="gp" style="color:var(--red);border-color:rgba(255,59,59,.3);background:var(--red-lt)">&lt; 0 · <span data-key="grade_crit">Critical</span></div>
+        <div class="gp" style="color:#a07800;border-color:rgba(160,120,0,.3);background:#FFFBE6">0–30 · <span data-key="grade_fair">Fair</span></div>
+        <div class="gp" style="color:#0a7048;border-color:rgba(35,209,138,.35);background:var(--green-lt)">30–70 · <span data-key="grade_good">Good</span></div>
+        <div class="gp" style="color:var(--orange);border-color:rgba(255,124,81,.35);background:var(--orange-lt)">&gt; 70 · <span data-key="grade_wc">World-class</span></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- TEMKIN -->
+<section class="sec sec-navy" id="temkin">
+  <div class="wrap">
+    <span class="ey g rv" data-key="part02_label">Part 02 — Temkin Experience Ratings</span>
+    <div class="rl g rv d1"></div>
+    <h2 class="st wh rv d2" data-key="temkin_title">Three dimensions. One complete picture.</h2>
+    <p class="ss wh rv d3" data-key="temkin_sub">Developed by Bruce Temkin (Qualtrics XM Institute). Where NPS measures loyalty, Temkin diagnoses <em>why</em> — across three equal dimensions, each scored on a <strong style="color:white">7-point scale</strong>.</p>
+    <div class="tsr rv d3">
+      <div class="ts2"><div class="ts2n">10K</div><div class="ts2l" data-key="stat_consumers">US consumers surveyed</div></div>
+      <div class="ts2"><div class="ts2n">300+</div><div class="ts2l" data-key="stat_companies">companies rated</div></div>
+      <div class="ts2"><div class="ts2n">20</div><div class="ts2l" data-key="stat_industries">industries covered</div></div>
+      <div class="ts2"><div class="ts2n">3</div><div class="ts2l" data-key="stat_dims">equal dimensions</div></div>
+    </div>
+    <span class="ey w rv" style="margin-top:40px" data-key="t7_label">The 7-Point Measurement Scale — How It Works</span>
+    <div class="t7c rv d2">
+      <p class="t7i" data-key="t7_intro">Unlike NPS which uses a 0–10 scale, each Temkin dimension is measured on a <strong>7-point scale</strong>. The grouping mirrors NPS logic: <strong style="color:#ff7070">scores 1–3 = Detractor</strong>, <strong style="color:#f0c040">scores 4–5 = Passive</strong>, <strong style="color:#4de8a4">scores 6–7 = Promoter</strong>. The dimension score is <strong>%Promoters minus %Detractors</strong> — the "net goodness" percentage. Passives are excluded, exactly like in NPS. The overall Temkin Experience Rating is the <strong>simple average of the three dimension scores</strong> — no weighting applied.</p>
+      <div class="t7w">
+        <div>
+          <div class="t7leg"><div class="t7l det" data-key="t7_det">1–3 · Detractor</div><div class="t7l pas" data-key="t7_pas">4–5 · Passive</div><div class="t7l pro" data-key="t7_pro">6–7 · Promoter</div></div>
+          <div class="t7hint" data-key="t7_hint">Click a score to see what it means</div>
+          <div class="t7row" id="t7Row">
+            <div class="t7b det" data-t="1">1</div><div class="t7b det" data-t="2">2</div><div class="t7b det" data-t="3">3</div><div class="t7b pas" data-t="4">4</div><div class="t7b pas" data-t="5">5</div><div class="t7b pro" data-t="6">6</div><div class="t7b pro" data-t="7">7</div>
+          </div>
+          <div class="t7rlbls"><span data-key="t7_poor">Very poor (1)</span><span data-key="t7_exc">Excellent (7)</span></div>
+          <div class="t7res" id="t7Res"><div class="t7rn" id="t7RN" data-key="t7_click">Click a score above</div><div class="t7rd" id="t7RD" data-key="t7_click_sub">See how each score contributes to the net goodness percentage.</div></div>
+        </div>
+        <div class="t7fb">
+          <div class="t7ft" data-key="t7_example_title">Example: Effort dimension — 100 respondents</div>
+          <div style="font-size:12px;color:rgba(255,255,255,.5);line-height:1.6;margin-bottom:14px" data-key="t7_example_sub">How the net goodness score is calculated from 7-point responses:</div>
+          <div class="t7fr">
+            <div class="t7fbl p"><div class="t7fbn">45</div><div class="t7fbl2" data-key="t7_promoters_eg">Promoters (6–7)</div></div>
+            <div class="t7fo">−</div>
+            <div class="t7fbl d"><div class="t7fbn">20</div><div class="t7fbl2" data-key="t7_detractors_eg">Detractors (1–3)</div></div>
+            <div class="t7fo">=</div>
+            <div class="t7fbl r"><div class="t7fbn">+25%</div><div class="t7fbl2" data-key="t7_net_goodness">Net Goodness</div></div>
+          </div>
+          <div style="font-size:11px;color:rgba(255,255,255,.4);margin-bottom:16px" data-key="t7_passives_note">The 35 Passives (4–5) are excluded — just as in NPS.</div>
+          <div class="t7ft" style="margin-top:14px" data-key="t7_overall_title">Overall rating = average of the three dimensions</div>
+          <div class="t7fr">
+            <div class="t7fbl p"><div class="t7fbn">+38%</div><div class="t7fbl2" data-key="dim_success2">Success</div></div>
+            <div class="t7fo">+</div>
+            <div class="t7fbl a"><div class="t7fbn">+25%</div><div class="t7fbl2" data-key="dim_effort2">Effort</div></div>
+            <div class="t7fo">+</div>
+            <div class="t7fbl" style="background:rgba(255,124,81,.12)"><div class="t7fbn" style="color:var(--orange)">+41%</div><div class="t7fbl2" data-key="dim_emotion2">Emotion</div></div>
+            <div class="t7fo">÷3</div>
+            <div class="t7fbl r"><div class="t7fbn">+35%</div><div class="t7fbl2" data-key="t7_txr">TxR Score</div></div>
+          </div>
+          <div class="t7note" data-key="t7_note">All three dimensions carry equal weight — no weighting is applied. The methodology treats Success, Effort and Emotion as equally important parts of every customer experience.</div>
+        </div>
+      </div>
+    </div>
+    <span class="ey g rv" data-key="explore_dims_label">Explore the Three Dimensions</span>
+    <div class="dtabs rv d2">
+      <button class="dtab ts" id="tabS" onclick="showDim('s')" data-key="tab_success">✅ Success</button>
+      <button class="dtab" id="tabE" onclick="showDim('e')" data-key="tab_effort">⚡ Effort</button>
+      <button class="dtab" id="tabM" onclick="showDim('m')" data-key="tab_emotion">❤️ Emotion</button>
+    </div>
+    <div class="dp dp-s on" id="dpS">
+      <div><p class="dq" data-key="s_q">"Did the experience meet your needs?"</p><p class="dd" data-key="s_desc">Success measures whether customers accomplished what they came to do. The functional baseline — without it, no warmth or low friction compensates. Scored 1–7: 1–3 = Detractor, 4–5 = Passive, 6–7 = Promoter.</p><div class="di"><div class="dil" data-key="why_matters">Why it matters</div><div class="dit" data-key="s_why">Even customers who feel positive about an interaction may churn if the core experience fails to deliver results. Success is non-negotiable before optimising Effort or Emotion.</div></div><div class="di"><div class="dil" data-key="example">Example</div><div class="dit" data-key="s_eg">A customer tries to change their delivery address. Did they succeed first time? Or did it take 3 calls? That outcome — rated 1 to 7 — determines their Success score.</div></div></div>
+      <div class="dsim"><div class="dsimtit" data-key="sim_s">Simulate a Success score (1–7)</div><div class="drlbls"><span data-key="failed">Failed completely (1)</span><span data-key="excellent_sim">Excellent (7)</span></div><input type="range" class="dr ds" id="srS" min="1" max="7" value="6" oninput="updDim('S')"><div class="dsout"><div class="dsn" id="dnS" style="color:var(--blue)">6 / 7 — Promoter</div><div class="dsl" data-key="seven_pt_lbl">7-point rating · contributes to net goodness</div><div class="dsbar" id="dbS" style="background:linear-gradient(90deg,#2445B1,#7aB4FF);width:83%"></div></div><div class="dint" id="diS" data-key="s_int_6">Score 6 (Promoter) — Strong result. This customer increases your Success net goodness. Focus on eliminating remaining failure cases.</div></div>
+    </div>
+    <div class="dp dp-e" id="dpE">
+      <div><p class="dq" data-key="e_q">"How easy was it to accomplish your goal?"</p><p class="dd" data-key="e_desc">Effort measures friction. Research shows reducing effort drives more loyalty than adding delight. High effort — even when successful — creates Detractors. Scored 1–7: 1–3 = high friction (Detractor), 4–5 = moderate (Passive), 6–7 = effortless (Promoter).</p><div class="di"><div class="dil" data-key="why_matters2">Why it matters</div><div class="dit" data-key="e_why">Customers experiencing high effort are far more likely to churn than those who simply lack a positive surprise. Fixing friction typically yields higher loyalty ROI than adding features.</div></div><div class="di"><div class="dil" data-key="example2">Example</div><div class="dit" data-key="e_eg">A complaint was resolved — but the customer called 3 times, re-explained each time, and waited 45 minutes on hold. Success ✓, but Effort score: 2 out of 7 (Detractor).</div></div></div>
+      <div class="dsim"><div class="dsimtit" data-key="sim_e">Simulate an Effort score (1–7)</div><div class="drlbls"><span data-key="hard">Very hard (1)</span><span data-key="effortless">Effortless (7)</span></div><input type="range" class="dr de" id="srE" min="1" max="7" value="5" oninput="updDim('E')"><div class="dsout"><div class="dsn" id="dnE" style="color:#0a7048">5 / 7 — Passive</div><div class="dsl" data-key="passive_excl">7-point rating · Passive = excluded from net goodness</div><div class="dsbar" id="dbE" style="background:linear-gradient(90deg,#23D18A,#80ffcc);width:67%"></div></div><div class="dint" id="diE" data-key="e_int_5">Score 5 (Passive) — Excluded from net goodness. Manageable but not frictionless. Audit IVR flows and transfer rates.</div></div>
+    </div>
+    <div class="dp dp-m" id="dpM">
+      <div><p class="dq" data-key="m_q">"How did the experience make you feel?"</p><p class="dd" data-key="m_desc">Emotion captures the affective residue — how customers feel after engaging with you. Often the strongest loyalty predictor. Scored 1–7: 1–3 = negative (Detractor), 4–5 = neutral (Passive), 6–7 = positive (Promoter).</p><div class="di"><div class="dil" data-key="why_matters3">Why it matters</div><div class="dit" data-key="m_why">Memories drive future behaviour — not technical outcomes. A successful interaction that felt cold is remembered negatively. That memory determines whether the customer returns.</div></div><div class="di"><div class="dil" data-key="example3">Example</div><div class="dit" data-key="m_eg">"The agent solved my problem but was dismissive." Success ✓, Emotion: 2 out of 7 (Detractor). Counts negatively in Emotion net goodness despite a successful outcome.</div></div></div>
+      <div class="dsim"><div class="dsimtit" data-key="sim_m">Simulate an Emotion score (1–7)</div><div class="drlbls"><span data-key="very_neg">Very negative (1)</span><span data-key="very_pos">Very positive (7)</span></div><input type="range" class="dr dm" id="srM" min="1" max="7" value="5" oninput="updDim('M')"><div class="dsout"><div class="dsn" id="dnM" style="color:var(--orange)">5 / 7 — Passive</div><div class="dsl" data-key="passive_excl2">7-point rating · Passive = excluded from net goodness</div><div class="dsbar" id="dbM" style="background:linear-gradient(90deg,#FF7C51,#ffb89a);width:67%"></div></div><div class="dint" id="diM" data-key="m_int_5">Score 5 (Passive) — Excluded from net goodness. Acceptable but not warm. Review frontline communication tone.</div></div>
+    </div>
+  </div>
+</section>
+
+<!-- COMBINED -->
+<section class="sec sec-light" id="combined">
+  <div class="wrap">
+    <span class="ey rv" data-key="part03_label">Part 03 — NPS + Temkin Together</span>
+    <div class="rl rv d1"></div>
+    <h2 class="st rv d2" data-key="combined_title">The compass &amp; the map.</h2>
+    <p class="ss rv d3" data-key="combined_sub">NPS (0–10) tells you <em>where</em> you stand on loyalty. Temkin (1–7, three dimensions) tells you <em>why</em>. Together they form a complete navigation system.</p>
+    <div class="corr rv d2">
+      <div class="corrn">0.87</div>
+      <div><div class="corrh" data-key="corr_title">Pearson Correlation — NPS vs. Temkin Ratings</div><div class="corrp" data-key="corr_sub">XM Institute (2023), 319 companies, 20 industries. Despite using different scales — NPS uses 0–10, Temkin uses 1–7 — the metrics are highly correlated but measure distinct aspects. They reinforce rather than replace each other.</div></div>
+    </div>
+    <div class="cgrid rv d3">
+      <div class="ccard">
+        <div class="cchdr"><div class="cci b">🎯</div><div><div class="cct" data-key="nps_signal_title">NPS — The Loyalty Signal</div><div class="ccs" data-key="nps_scale_note">0–10 scale · One question</div></div></div>
+        <ul class="cl">
+          <li class="ck" data-key="nps_pro1">Tracks loyalty trajectory with a single comparable number</li>
+          <li class="ck" data-key="nps_pro2">Benchmarks externally against competitors and industry averages</li>
+          <li class="ck" data-key="nps_pro3">Strongly correlated with churn, CLV, and word-of-mouth growth</li>
+          <li class="ck" data-key="nps_pro4">High response rates — minimal survey fatigue</li>
+          <li class="cx" data-key="nps_con1">Cannot explain what is driving the score up or down</li>
+          <li class="cx" data-key="nps_con2">Culturally biased — scoring norms differ across countries</li>
+        </ul>
+      </div>
+      <div class="ccard">
+        <div class="cchdr"><div class="cci o">🔬</div><div><div class="cct" data-key="txr_diag_title">Temkin — The Diagnostic Layer</div><div class="ccs" data-key="txr_scale_note">1–7 scale · Three equal dimensions</div></div></div>
+        <ul class="cl">
+          <li class="ck" data-key="txr_pro1">Pinpoints which dimension drives dissatisfaction</li>
+          <li class="ck" data-key="txr_pro2">Enables targeted action — fix friction, retrain empathy, or fix product</li>
+          <li class="ck" data-key="txr_pro3">Open standard benchmark — 300+ companies, 20 industries</li>
+          <li class="ck" data-key="txr_pro4">More culturally resilient than NPS for cross-market comparison</li>
+          <li class="cx" data-key="txr_con1">Requires three questions — slightly more respondent effort</li>
+          <li class="cx" data-key="txr_con2">Fewer external benchmark datasets than NPS</li>
+        </ul>
+      </div>
+    </div>
+    <span class="ey rv" data-key="scenario_label">Scenario Explorer — How They Work Together</span>
+    <div class="sctabs rv d2">
+      <button class="sct on" onclick="showSc(this,'sc1')" data-key="sc_drop">NPS Drops</button>
+      <button class="sct" onclick="showSc(this,'sc2')" data-key="sc_bench">Competitor Benchmark</button>
+      <button class="sct" onclick="showSc(this,'sc3')" data-key="sc_invest">CX Investment</button>
+      <button class="sct" onclick="showSc(this,'sc4')" data-key="sc_culture">New Market Entry</button>
+    </div>
+    <div class="scwrap rv d3">
+      <div class="scp on" id="sc1"><div class="sc3">
+        <div class="scol sn"><div class="schdr" data-key="nps_says">NPS says</div><div class="scsit" data-key="sc1_sit">"Our NPS dropped from +42 to +34 this quarter."</div><p class="sct2" data-key="sc1_nps">NPS flags that loyalty has deteriorated — an 8-point drop is significant. But the 0–10 score alone cannot tell you whether the problem is product, process, or people.</p></div>
+        <div class="scol so"><div class="schdr" data-key="temkin_adds">Temkin adds</div><div style="height:46px"></div><p class="sct2" data-key="sc1_txr">Temkin's 7-point scores show Success is stable, Effort improved, but the Emotion net goodness dropped 14 points. The problem is emotional — frontline behaviour or communication tone changed.</p></div>
+        <div class="scol sca"><div class="schdr" data-key="action">Action</div><div style="height:46px"></div><p class="sct2" data-key="sc1_act">Audit call recordings and chat transcripts. Identify whether a policy change or staffing shift triggered the Emotion drop. Target frontline empathy training specifically.</p></div>
+      </div></div>
+      <div class="scp" id="sc2"><div class="sc3">
+        <div class="scol sn"><div class="schdr" data-key="nps_says2">NPS says</div><div class="scsit" data-key="sc2_sit">"Our NPS of +38 matches the industry average."</div><p class="sct2" data-key="sc2_nps">Being average means no differentiation — customers have little reason to stay when a better offer comes along. But NPS cannot tell you where to act.</p></div>
+        <div class="scol so"><div class="schdr" data-key="temkin_adds2">Temkin adds</div><div style="height:46px"></div><p class="sct2" data-key="sc2_txr">Temkin shows your Effort net goodness is 18 points below the industry leader. Your Success and Emotion scores are competitive — it is specifically the friction in your journeys holding loyalty back.</p></div>
+        <div class="scol sca"><div class="schdr" data-key="action2">Action</div><div style="height:46px"></div><p class="sct2" data-key="sc2_act">Set a 12-month goal to close the Effort gap. Audit the top 5 journeys by volume for friction. Present dimension benchmarks alongside NPS to show leadership where to invest.</p></div>
+      </div></div>
+      <div class="scp" id="sc3"><div class="sc3">
+        <div class="scol sn"><div class="schdr" data-key="nps_says3">NPS says</div><div class="scsit" data-key="sc3_sit">"We have budget for one major CX initiative. What do we prioritise?"</div><p class="sct2" data-key="sc3_nps">NPS by touchpoint shows post-purchase support scores lowest. But it cannot tell you whether to invest in technology, staffing, or process redesign.</p></div>
+        <div class="scol so"><div class="schdr" data-key="temkin_adds3">Temkin adds</div><div style="height:46px"></div><p class="sct2" data-key="sc3_txr">Temkin 7-point scores: Success 6.1 (Promoter zone), Effort 2.8 (Detractor zone — critical), Emotion 5.2 (Passive). The bottleneck is purely Effort — not capability or empathy.</p></div>
+        <div class="scol sca"><div class="schdr" data-key="action3">Action</div><div style="height:46px"></div><p class="sct2" data-key="sc3_act">Invest in self-service tooling and intelligent routing — not headcount or training. Temkin diagnosis saves budget by ruling out wrong interventions. Target: contacts-per-resolution from 2.8 to 1.4.</p></div>
+      </div></div>
+      <div class="scp" id="sc4"><div class="sc3">
+        <div class="scol sn"><div class="schdr" data-key="nps_says4">NPS says</div><div class="scsit" data-key="sc4_sit">"Our Japanese market NPS of +12 is far below our US score of +56."</div><p class="sct2" data-key="sc4_nps">Raw NPS comparison across markets is misleading — Japanese consumers systematically score lower on 0–10 scales. Cultural calibration matters enormously with NPS.</p></div>
+        <div class="scol so"><div class="schdr" data-key="temkin_adds4">Temkin adds</div><div style="height:46px"></div><p class="sct2" data-key="sc4_txr">Temkin 7-point scores in Japan are above local benchmarks across all three dimensions. The NPS difference is a cultural artefact of the 0–10 scale — the experience is performing well.</p></div>
+        <div class="scol sca"><div class="schdr" data-key="action4">Action</div><div style="height:46px"></div><p class="sct2" data-key="sc4_act">Benchmark NPS locally. Use Temkin net goodness scores for cross-market comparison — the 1–7 scale is more culturally resilient and produces comparable results across markets.</p></div>
+      </div></div>
+    </div>
+  </div>
+</section>
+
+<!-- PRACTICAL -->
+<section class="sec" id="practical" style="background:white">
+  <div class="wrap">
+    <span class="ey b rv" data-key="part04_label">Part 04 — How to Use It</span>
+    <div class="rl b rv d1"></div>
+    <h2 class="st rv d2" data-key="practical_title">Six steps from measurement to action.</h2>
+    <p class="ss rv d3" data-key="practical_sub">Measuring without acting is the most common CX programme failure. A practical playbook — with Temkin layered into each step.</p>
+    <div class="sgrid">
+      <div class="step rv d1"><div class="stepbg">01</div><div class="stepic">🎯</div><div class="steptt" data-key="step1_t">Segment, Don't Average</div><p class="stepd" data-key="step1_d">Overall NPS hides real problems. Measure by product, region, touchpoint, and segment. Apply all three Temkin 7-point dimensions per segment for full diagnosis.</p><div class="stept" data-key="step1_tip">Chat NPS +62 vs. phone +18 → Temkin reveals whether it's an Effort or Emotion gap on the phone channel.</div></div>
+      <div class="step rv d2"><div class="stepbg">02</div><div class="stepic">🔍</div><div class="steptt" data-key="step2_t">Mine the Open Answers</div><p class="stepd" data-key="step2_d">The NPS score says what — the open question says why. Map recurring themes to the three Temkin dimensions to prioritise fixes correctly.</p><div class="stept" data-key="step2_tip">Delivery time complaints → Effort. Dismissive tone → Emotion. Billing error → Success.</div></div>
+      <div class="step rv d3"><div class="stepbg">03</div><div class="stepic">📞</div><div class="steptt" data-key="step3_t">Close the Loop — Fast</div><p class="stepd" data-key="step3_d">Contact Detractors within 48 hours. Thank Promoters. Ask Passives what would move them to a 6 or 7 on Temkin. Each conversation validates your dimension hypotheses.</p><div class="stept" data-key="step3_tip">Systematic follow-up converts 20–30% of Detractors within 90 days.</div></div>
+      <div class="step rv d4"><div class="stepbg">04</div><div class="stepic">📈</div><div class="steptt" data-key="step4_t">Watch the Trend</div><p class="stepd" data-key="step4_d">One measurement says little. Track NPS and all three Temkin net goodness scores over time. Rising Emotion while Success stays flat is a very different story.</p><div class="stept" data-key="step4_tip">NPS +12 → +28 in 6 months after improving delivery — the Effort dimension drove the gain.</div></div>
+      <div class="step rv d5"><div class="stepbg">05</div><div class="stepic">🔗</div><div class="steptt" data-key="step5_t">Link to Business Data</div><p class="stepd" data-key="step5_d">Connect NPS and Temkin scores to churn, CLV, and repeat purchase rates. Prove causation to build the business case for CX investment.</p><div class="stept" data-key="step5_tip">Promoters generate 3–4× higher lifetime value. Low Effort net goodness predicts 40% lower churn.</div></div>
+      <div class="step rv d6"><div class="stepbg">06</div><div class="stepic">🏢</div><div class="steptt" data-key="step6_t">Make It Visible Everywhere</div><p class="stepd" data-key="step6_d">Share NPS and Temkin dashboards organisation-wide. Frontline teams with weekly visibility improve 2× faster than those receiving monthly reports.</p><div class="stept" data-key="step6_tip">Show each Temkin dimension per team: Success for product, Effort for ops, Emotion for service.</div></div>
+    </div>
+  </div>
+</section>
+
+<!-- PITFALLS -->
+<section class="sec sec-light" id="pitfalls">
+  <div class="wrap">
+    <span class="ey r rv" data-key="part05_label">Part 05 — Pitfalls &amp; Criticism</span>
+    <div class="rl r rv d1"></div>
+    <h2 class="st rv d2" data-key="pitfalls_title">Powerful. <em style="color:var(--red)">Not perfect.</em></h2>
+    <p class="ss rv d3" data-key="pitfalls_sub">Understanding where these frameworks fall short is as important as knowing their strengths.</p>
+    <div class="pgrid">
+      <div class="pit rv d1"><div class="pico">!</div><div><div class="ptt" data-key="pit1_t">Measuring ≠ Acting</div><p class="pd" data-key="pit1_d">Collecting data monthly without structural changes is the single most common failure. The score changes nothing — only decisions do.</p><div class="pf" data-key="pit1_f">For every cycle, mandate an action plan for the lowest-performing Temkin dimension and the top 3 complaint drivers.</div></div></div>
+      <div class="pit rv d2"><div class="pico">!</div><div><div class="ptt" data-key="pit2_t">Gamification &amp; Score Coaching</div><p class="pd" data-key="pit2_d">Employees evaluated on NPS may coach customers toward high scores. This corrupts data and makes trends meaningless.</p><div class="pf" data-key="pit2_f">Never tie NPS or Temkin to individual bonuses. Use team-level trends as indicators only.</div></div></div>
+      <div class="pit rv d3"><div class="pico">!</div><div><div class="ptt" data-key="pit3_t">Survivor Bias</div><p class="pd" data-key="pit3_d">Customers who churned don't fill in surveys. Both metrics over-represent customers who stayed — inflating scores artificially.</p><div class="pf" data-key="pit3_f">Combine with exit surveys and churn interviews. Churned customers provide the best Emotion dimension insight.</div></div></div>
+      <div class="pit rv d4"><div class="pico">!</div><div><div class="ptt" data-key="pit4_t">Cross-Cultural Comparison Errors</div><p class="pd" data-key="pit4_d">Japanese consumers rarely score 9–10 on NPS; Americans use extremes readily. A global dashboard treating all markets the same misrepresents performance. Temkin's 1–7 scale is more culturally resilient.</p><div class="pf" data-key="pit4_f">Benchmark NPS locally. Use Temkin net goodness scores for cross-market comparison.</div></div></div>
+      <div class="pit rv d5"><div class="pico">!</div><div><div class="ptt" data-key="pit5_t">Treating NPS as the Ultimate Metric</div><p class="pd" data-key="pit5_d">Companies with high NPS have failed; companies with low NPS have grown. NPS is one input into strategy — not a substitute for it.</p><div class="pf" data-key="pit5_f">Pair NPS with all three Temkin dimensions and a Customer Effort Score for a triangulated view.</div></div></div>
+      <div class="pit rv d6"><div class="pico">!</div><div><div class="ptt" data-key="pit6_t">Ignoring the Temkin Emotion Gap</div><p class="pd" data-key="pit6_d">Technical and B2B organisations routinely dismiss Emotion. It is consistently the strongest loyalty predictor even in engineering contexts.</p><div class="pf" data-key="pit6_f">Focus on eliminating negative emotional experiences (scores 1–3) before chasing positive ones. The floor matters more than the ceiling.</div></div></div>
+    </div>
+  </div>
+</section>
+
+<!-- QUIZ -->
+<section class="sec sec-navy" id="quiz">
+  <div class="quiz-wrap">
+    <span class="ey g rv" data-key="quiz_eyebrow">Part 06 — Knowledge Quiz</span>
+    <div class="rl g rv d1"></div>
+    <h2 class="st wh rv d2" data-key="quiz_title">Test your knowledge.</h2>
+    <p class="ss wh rv d3" data-key="quiz_sub">10 questions covering NPS, Temkin Experience Ratings, and how to apply both frameworks in practice.</p>
+    <div class="qz-progress"><div class="qz-progress-bar" id="qzBar" style="width:0%"></div></div>
+    <div class="qz-card" id="qzCard">
+      <div class="qz-num" id="qzNum">Question 1 of 10</div>
+      <div class="qz-q" id="qzQ">Loading...</div>
+      <div class="qz-opts" id="qzOpts"></div>
+      <div class="qz-feedback" id="qzFB"></div>
+      <button class="qz-next" id="qzNext" onclick="nextQ()" data-key="next_q">Next question →</button>
+    </div>
+    <div class="qz-score" id="qzScore">
+      <div class="qz-score-big" id="qzScoreBig">0/10</div>
+      <div class="qz-score-label" id="qzScoreLbl">Well done!</div>
+      <div class="qz-score-sub" id="qzScoreSub">Keep exploring the guide above to deepen your knowledge.</div>
+      <button class="qz-restart" onclick="startQuiz()" data-key="restart_quiz">Restart quiz ↺</button>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div class="ftl">DAMEN <span>·</span> CX Intelligence</div>
+  <div class="fts">NPS · TEMKIN EXPERIENCE RATINGS · INTERACTIVE GUIDE</div>
+  <div class="ftnav">
+    <button onclick="goto('hero')" data-key="nav_home2">Overview</button>
+    <button onclick="goto('nps')" data-key="nav_nps2">NPS</button>
+    <button onclick="goto('temkin')" data-key="nav_temkin2">Temkin</button>
+    <button onclick="goto('combined')" data-key="nav_combined2">Combined</button>
+    <button onclick="goto('practical')" data-key="nav_practical2">How to Use</button>
+    <button onclick="goto('pitfalls')" data-key="nav_pitfalls2">Pitfalls</button>
+    <button onclick="goto('quiz')" data-key="nav_quiz2">Quiz</button>
+  </div>
+  <div class="ftc">Built on Damen Shipyards Group brand guidelines</div>
+  <div class="ftsr">Sources: Reichheld, HBR 2003 · Temkin Group / Qualtrics XM Institute · Bain &amp; Company NPS Benchmarks 2023 · XM Institute Economics of NPS 2023</div>
+</footer>
+
+<script>
+// ── TRANSLATIONS ──────────────────────────────────────────────
+const langs={
+en:{
+  nav_home:'Home',nav_nps:'NPS',nav_temkin:'Temkin',nav_combined:'Combined',nav_practical:'How to Use',nav_pitfalls:'Pitfalls',nav_quiz:'Quiz',
+  hero_eyebrow:'Interactive Learning Guide · Damen Shipyards Group',
+  hero_title_3:'Explained',
+  hero_sub:'Two of the most powerful CX frameworks — what they measure, how they work, and how to use them together to drive real improvement.',
+  hero_cta1:'Start with NPS ↓',hero_cta2:'Jump to Combined',
+  nps_score_label:'NPS Score',dim_success:'Success',dim_effort:'Effort',dim_emotion:'Emotion',scroll_hint:'Scroll to explore',
+  part01_label:'Part 01 — Net Promoter Score',
+  nps_title:'One question. A loyalty signal.',
+  nps_sub:'Introduced by Fred Reichheld in 2003 (Bain & Company / HBR). Customers rate on a 0–10 scale: 0–6 = Detractor, 7–8 = Passive, 9–10 = Promoter. NPS = %Promoters − %Detractors.',
+  nps_question:'"How likely is it that you would recommend our organisation to a friend or colleague?"',
+  scale_low:'Not at all likely',scale_high:'Extremely likely',score_label:'Score',click_score:'Click a score above to see what it means.',
+  three_groups_label:'The Three Groups',
+  det_range:'SCORE 0–6 · DETRACTORS',det_name:'Detractors',det_desc:'Unhappy customers who actively spread negative word-of-mouth. They slow growth and damage reputation.',det_quote:'I contacted support 3 times and my issue is still unresolved. I would not recommend this to anyone.',det_author:'— Customer, telecom sector',
+  pas_range:'SCORE 7–8 · PASSIVES',pas_name:'Passives',pas_desc:'Satisfied but unenthusiastic. They switch easily to a competitor when a better offer comes along.',pas_quote:'It works fine, no complaints. Spectacular? Not really. I just use it.',pas_author:'— Customer, software sector',
+  pro_range:'SCORE 9–10 · PROMOTERS',pro_name:'Promoters',pro_desc:'Loyal fans who actively recommend you. Your cheapest and most effective marketing channel.',pro_quote:'I have already referred at least 5 friends. Your service is truly exceptional.',pro_author:'— Customer, e-commerce sector',
+  formula_label:'The Formula',promoters:'Promoters',of_respondents:'of respondents',detractors:'Detractors',of_respondents2:'of respondents',nps_score_lbl:'NPS Score',excellent:'Excellent',
+  promoters2:'Promoters',detractors2:'Detractors',nps_score_lbl2:'NPS Score',
+  calc_title:'🧮 Live NPS Calculator — drag the sliders',calc_above_avg:'Above the global average of +33',
+  grade_crit:'Critical',grade_fair:'Fair',grade_good:'Good',grade_wc:'World-class',
+  part02_label:'Part 02 — Temkin Experience Ratings',
+  temkin_title:'Three dimensions. One complete picture.',
+  temkin_sub:'Developed by Bruce Temkin (Qualtrics XM Institute). Where NPS measures loyalty, Temkin diagnoses why — across three equal dimensions, each scored on a 7-point scale.',
+  stat_consumers:'US consumers surveyed',stat_companies:'companies rated',stat_industries:'industries covered',stat_dims:'equal dimensions',
+  t7_label:'The 7-Point Measurement Scale — How It Works',
+  t7_intro:'Unlike NPS which uses a 0–10 scale, each Temkin dimension is measured on a 7-point scale. The grouping mirrors NPS logic: scores 1–3 = Detractor, scores 4–5 = Passive, scores 6–7 = Promoter. The dimension score is %Promoters minus %Detractors — the "net goodness" percentage. Passives are excluded, exactly like in NPS. The overall Temkin Experience Rating is the simple average of the three dimension scores — no weighting applied.',
+  t7_det:'1–3 · Detractor',t7_pas:'4–5 · Passive',t7_pro:'6–7 · Promoter',
+  t7_hint:'Click a score to see what it means',t7_poor:'Very poor (1)',t7_exc:'Excellent (7)',
+  t7_click:'Click a score above',t7_click_sub:'See how each score contributes to the net goodness percentage.',
+  t7_example_title:'Example: Effort dimension — 100 respondents',t7_example_sub:'How the net goodness score is calculated from 7-point responses:',
+  t7_promoters_eg:'Promoters (6–7)',t7_detractors_eg:'Detractors (1–3)',t7_net_goodness:'Net Goodness',
+  t7_passives_note:'The 35 Passives (4–5) are excluded — just as in NPS.',
+  t7_overall_title:'Overall rating = average of the three dimensions',dim_success2:'Success',dim_effort2:'Effort',dim_emotion2:'Emotion',t7_txr:'TxR Score',
+  t7_note:'All three dimensions carry equal weight — no weighting is applied.',
+  explore_dims_label:'Explore the Three Dimensions',tab_success:'✅ Success',tab_effort:'⚡ Effort',tab_emotion:'❤️ Emotion',
+  s_q:'"Did the experience meet your needs?"',s_desc:'Success measures whether customers accomplished what they came to do. The functional baseline — without it, no warmth or low friction compensates. Scored 1–7: 1–3 = Detractor, 4–5 = Passive, 6–7 = Promoter.',why_matters:'Why it matters',s_why:'Even customers who feel positive may churn if the core experience fails to deliver results.',example:'Example',s_eg:'A customer tries to change their delivery address. Did they succeed first time? Or did it take 3 calls? That outcome — rated 1 to 7 — determines their Success score.',sim_s:'Simulate a Success score (1–7)',failed:'Failed completely (1)',excellent_sim:'Excellent (7)',seven_pt_lbl:'7-point rating · contributes to net goodness',s_int_6:'Score 6 (Promoter) — Strong result. This customer increases your Success net goodness.',
+  e_q:'"How easy was it to accomplish your goal?"',e_desc:'Effort measures friction. Reducing effort drives more loyalty than adding delight. Scored 1–7: 1–3 = Detractor, 4–5 = Passive, 6–7 = Promoter.',why_matters2:'Why it matters',e_why:'Customers experiencing high effort are far more likely to churn than those who lack a positive surprise.',example2:'Example',e_eg:'A complaint was resolved — but the customer called 3 times and waited 45 minutes on hold. Success ✓, but Effort score: 2 out of 7 (Detractor).',sim_e:'Simulate an Effort score (1–7)',hard:'Very hard (1)',effortless:'Effortless (7)',passive_excl:'7-point rating · Passive = excluded from net goodness',e_int_5:'Score 5 (Passive) — Excluded from net goodness. Manageable but not frictionless.',
+  m_q:'"How did the experience make you feel?"',m_desc:'Emotion captures the affective residue. Often the strongest loyalty predictor. Scored 1–7: 1–3 = Detractor, 4–5 = Passive, 6–7 = Promoter.',why_matters3:'Why it matters',m_why:'Memories drive future behaviour. A successful interaction that felt cold is remembered negatively.',example3:'Example',m_eg:'"The agent solved my problem but was dismissive." Success ✓, Emotion: 2 out of 7 (Detractor).',sim_m:'Simulate an Emotion score (1–7)',very_neg:'Very negative (1)',very_pos:'Very positive (7)',passive_excl2:'7-point rating · Passive = excluded from net goodness',m_int_5:'Score 5 (Passive) — Excluded from net goodness. Acceptable but not warm.',
+  part03_label:'Part 03 — NPS + Temkin Together',combined_title:'The compass & the map.',combined_sub:'NPS (0–10) tells you where you stand on loyalty. Temkin (1–7, three dimensions) tells you why. Together they form a complete navigation system.',
+  corr_title:'Pearson Correlation — NPS vs. Temkin Ratings',corr_sub:'XM Institute (2023), 319 companies, 20 industries. Highly correlated but measure distinct aspects. They reinforce rather than replace each other.',
+  nps_signal_title:'NPS — The Loyalty Signal',nps_scale_note:'0–10 scale · One question',
+  nps_pro1:'Tracks loyalty trajectory with a single comparable number',nps_pro2:'Benchmarks externally against competitors and industry averages',nps_pro3:'Strongly correlated with churn, CLV, and word-of-mouth growth',nps_pro4:'High response rates — minimal survey fatigue',nps_con1:'Cannot explain what is driving the score up or down',nps_con2:'Culturally biased — scoring norms differ across countries',
+  txr_diag_title:'Temkin — The Diagnostic Layer',txr_scale_note:'1–7 scale · Three equal dimensions',
+  txr_pro1:'Pinpoints which dimension drives dissatisfaction',txr_pro2:'Enables targeted action — fix friction, retrain empathy, or fix product',txr_pro3:'Open standard benchmark — 300+ companies, 20 industries',txr_pro4:'More culturally resilient than NPS for cross-market comparison',txr_con1:'Requires three questions — slightly more respondent effort',txr_con2:'Fewer external benchmark datasets than NPS',
+  scenario_label:'Scenario Explorer — How They Work Together',
+  sc_drop:'NPS Drops',sc_bench:'Competitor Benchmark',sc_invest:'CX Investment',sc_culture:'New Market Entry',
+  nps_says:'NPS says',temkin_adds:'Temkin adds',action:'Action',
+  nps_says2:'NPS says',temkin_adds2:'Temkin adds',action2:'Action',
+  nps_says3:'NPS says',temkin_adds3:'Temkin adds',action3:'Action',
+  nps_says4:'NPS says',temkin_adds4:'Temkin adds',action4:'Action',
+  sc1_sit:'"Our NPS dropped from +42 to +34 this quarter."',sc1_nps:'NPS flags that loyalty has deteriorated. An 8-point drop is significant. But the 0–10 score alone cannot tell you whether the problem is product, process, or people.',sc1_txr:"Temkin's 7-point scores show Success is stable, Effort improved, but the Emotion net goodness dropped 14 points. The problem is emotional.",sc1_act:'Audit call recordings. Identify whether a staffing shift triggered the Emotion drop. Target frontline empathy training.',
+  sc2_sit:'"Our NPS of +38 matches the industry average."',sc2_nps:'Being average means no differentiation. But NPS cannot tell you where to act.',sc2_txr:'Temkin shows your Effort net goodness is 18 points below the industry leader. Friction in your journeys is holding loyalty back.',sc2_act:'Set a 12-month goal to close the Effort gap. Audit the top 5 journeys. Present dimension benchmarks alongside NPS.',
+  sc3_sit:'"We have budget for one major CX initiative. What do we prioritise?"',sc3_nps:'NPS by touchpoint shows post-purchase support scores lowest. But it cannot tell you whether to invest in technology, staffing, or process.',sc3_txr:'Temkin 7-point scores: Success 6.1 (Promoter), Effort 2.8 (Detractor — critical), Emotion 5.2 (Passive). Bottleneck is Effort.',sc3_act:'Invest in self-service tooling and intelligent routing — not headcount. Target: contacts-per-resolution from 2.8 to 1.4.',
+  sc4_sit:'"Our Japanese market NPS of +12 is far below our US score of +56."',sc4_nps:'Raw NPS comparison across markets is misleading — Japanese consumers systematically score lower on 0–10 scales.',sc4_txr:'Temkin 7-point scores in Japan are above local benchmarks across all three dimensions. The NPS difference is a cultural artefact.',sc4_act:'Benchmark NPS locally. Use Temkin net goodness scores for cross-market comparison — more culturally resilient.',
+  part04_label:'Part 04 — How to Use It',practical_title:'Six steps from measurement to action.',practical_sub:'Measuring without acting is the most common CX programme failure. A practical playbook — with Temkin layered into each step.',
+  step1_t:'Segment, Don\'t Average',step1_d:'Overall NPS hides real problems. Measure by product, region, touchpoint, and segment. Apply all three Temkin 7-point dimensions per segment.',step1_tip:'Chat NPS +62 vs. phone +18 → Temkin reveals whether it\'s an Effort or Emotion gap.',
+  step2_t:'Mine the Open Answers',step2_d:'The NPS score says what — the open question says why. Map recurring themes to the three Temkin dimensions.',step2_tip:'Delivery time complaints → Effort. Dismissive tone → Emotion. Billing error → Success.',
+  step3_t:'Close the Loop — Fast',step3_d:'Contact Detractors within 48 hours. Thank Promoters. Ask Passives what would move them to a 6 or 7 on Temkin.',step3_tip:'Systematic follow-up converts 20–30% of Detractors within 90 days.',
+  step4_t:'Watch the Trend',step4_d:'One measurement says little. Track NPS and all three Temkin net goodness scores over time.',step4_tip:'NPS +12 → +28 in 6 months after improving delivery — the Effort dimension drove the gain.',
+  step5_t:'Link to Business Data',step5_d:'Connect NPS and Temkin scores to churn, CLV, and repeat purchase rates. Prove causation to build the business case.',step5_tip:'Promoters generate 3–4× higher lifetime value. Low Effort net goodness predicts 40% lower churn.',
+  step6_t:'Make It Visible Everywhere',step6_d:'Share NPS and Temkin dashboards organisation-wide. Frontline teams with weekly visibility improve 2× faster.',step6_tip:'Show each Temkin dimension per team: Success for product, Effort for ops, Emotion for service.',
+  part05_label:'Part 05 — Pitfalls & Criticism',pitfalls_title:'Powerful. Not perfect.',pitfalls_sub:'Understanding where these frameworks fall short is as important as knowing their strengths.',
+  pit1_t:'Measuring ≠ Acting',pit1_d:'Collecting data monthly without structural changes is the single most common failure.',pit1_f:'For every cycle, mandate an action plan for the lowest-performing Temkin dimension and the top 3 complaint drivers.',
+  pit2_t:'Gamification & Score Coaching',pit2_d:'Employees evaluated on NPS may coach customers toward high scores. This corrupts data and makes trends meaningless.',pit2_f:'Never tie NPS or Temkin to individual bonuses. Use team-level trends as indicators only.',
+  pit3_t:'Survivor Bias',pit3_d:'Customers who churned don\'t fill in surveys. Both metrics over-represent customers who stayed.',pit3_f:'Combine with exit surveys and churn interviews.',
+  pit4_t:'Cross-Cultural Comparison Errors',pit4_d:'Japanese consumers rarely score 9–10 on NPS. A global dashboard treating all markets the same misrepresents performance.',pit4_f:'Benchmark NPS locally. Use Temkin net goodness scores for cross-market comparison.',
+  pit5_t:'Treating NPS as the Ultimate Metric',pit5_d:'Companies with high NPS have failed; companies with low NPS have grown. NPS is one input — not a substitute for strategy.',pit5_f:'Pair NPS with all three Temkin dimensions and a Customer Effort Score.',
+  pit6_t:'Ignoring the Temkin Emotion Gap',pit6_d:'Technical and B2B organisations routinely dismiss Emotion. It is consistently the strongest loyalty predictor even in engineering contexts.',pit6_f:'Focus on eliminating negative emotional experiences (scores 1–3) before chasing positive ones.',
+  quiz_eyebrow:'Part 06 — Knowledge Quiz',quiz_title:'Test your knowledge.',quiz_sub:'10 questions covering NPS, Temkin Experience Ratings, and how to apply both frameworks in practice.',
+  next_q:'Next question →',restart_quiz:'Restart quiz ↺',qz_question_of:'Question {n} of {t}',qz_correct:'Correct!',qz_not_quite:'Not quite.',
+  qz_score_outstanding_lbl:'Outstanding! 🏆',qz_score_outstanding_sub:'You have mastered both NPS and Temkin. Time to apply this in practice.',
+  qz_score_well_lbl:'Well done! ✓',qz_score_well_sub:'Solid understanding. Review the sections where you hesitated to sharpen your knowledge.',
+  qz_score_start_lbl:'Good start →',qz_score_start_sub:'A reasonable base. We recommend re-reading the Temkin 7-point scale section and the Combined view.',
+  qz_score_keep_lbl:'Keep learning ↺',qz_score_keep_sub:'No worries — revisit the guide above and try again. The concepts become clear quickly.',
+  nav_home2:'Overview',nav_nps2:'NPS',nav_temkin2:'Temkin',nav_combined2:'Combined',nav_practical2:'How to Use',nav_pitfalls2:'Pitfalls',nav_quiz2:'Quiz'
+},
+nl:{
+  nav_home:'Home',nav_nps:'NPS',nav_temkin:'Temkin',nav_combined:'Gecombineerd',nav_practical:'Hoe te gebruiken',nav_pitfalls:'Valkuilen',nav_quiz:'Quiz',
+  hero_eyebrow:'Interactieve leermodule · Damen Shipyards Group',hero_title_3:'Uitgelegd',
+  hero_sub:'Twee van de krachtigste CX-frameworks — wat ze meten, hoe ze werken, en hoe je ze samen inzet voor echte verbetering.',
+  hero_cta1:'Begin met NPS ↓',hero_cta2:'Ga naar gecombineerd',nps_score_label:'NPS Score',dim_success:'Succes',dim_effort:'Inspanning',dim_emotion:'Emotie',scroll_hint:'Scroll om te ontdekken',
+  part01_label:'Deel 01 — Net Promoter Score',nps_title:'Één vraag. Een loyaliteitssignaal.',
+  nps_sub:'Geïntroduceerd door Fred Reichheld in 2003. Klanten beoordelen op een 0–10 schaal: 0–6 = Detractor, 7–8 = Passief, 9–10 = Promoter. NPS = %Promoters − %Detractors.',
+  nps_question:'"Hoe waarschijnlijk is het dat u onze organisatie zou aanbevelen aan een vriend of collega?"',
+  scale_low:'Helemaal niet waarschijnlijk',scale_high:'Uiterst waarschijnlijk',score_label:'Score',click_score:'Klik op een score om te zien wat het betekent.',
+  three_groups_label:'De Drie Groepen',
+  det_range:'SCORE 0–6 · DETRACTORS',det_name:'Critici',det_desc:'Ontevreden klanten die actief negatieve mond-tot-mondreclame maken.',det_quote:'Ik had 3x contact met de klantenservice en het probleem is nog steeds niet opgelost.',det_author:'— Klant, telecomsector',
+  pas_range:'SCORE 7–8 · PASSIEVEN',pas_name:'Passieven',pas_desc:'Tevreden maar niet enthousiast. Ze stappen makkelijk over naar een concurrent.',pas_quote:'Het werkt prima, geen klachten. Spectaculair? Niet echt. Ik gebruik het gewoon.',pas_author:'— Klant, softwaresector',
+  pro_range:'SCORE 9–10 · PROMOTERS',pro_name:'Promoters',pro_desc:'Loyale fans die actief aanbevelen. Uw goedkoopste en meest effectieve marketingkanaal.',pro_quote:'Ik heb al minstens 5 vrienden doorverwezen. Jullie service is echt uitzonderlijk.',pro_author:'— Klant, e-commercesector',
+  formula_label:'De Formule',promoters:'Promoters',of_respondents:'van respondenten',detractors:'Detractors',of_respondents2:'van respondenten',nps_score_lbl:'NPS Score',excellent:'Uitstekend',
+  promoters2:'Promoters',detractors2:'Detractors',nps_score_lbl2:'NPS Score',
+  calc_title:'🧮 Live NPS Calculator — versleep de schuifregelaars',calc_above_avg:'Boven het wereldgemiddelde van +33',
+  grade_crit:'Kritisch',grade_fair:'Matig',grade_good:'Goed',grade_wc:'Wereldklasse',
+  part02_label:'Deel 02 — Temkin Experience Ratings',temkin_title:'Drie dimensies. Één compleet beeld.',
+  temkin_sub:'Ontwikkeld door Bruce Temkin (Qualtrics XM Institute). Waar NPS loyaliteit meet, diagnosticeert Temkin waaróm — via drie gelijke dimensies op een 7-puntsschaal.',
+  stat_consumers:'US consumenten ondervraagd',stat_companies:'bedrijven beoordeeld',stat_industries:'sectoren gedekt',stat_dims:'gelijke dimensies',
+  t7_label:'De 7-Puntsschaal — Hoe het werkt',
+  t7_intro:'In tegenstelling tot NPS (0–10) wordt elke Temkin-dimensie gemeten op een 7-puntsschaal. Scores 1–3 = Detractor, 4–5 = Passief, 6–7 = Promoter. De dimensiescore = %Promoters − %Detractors. Passieven worden uitgesloten, net als bij NPS. De overall Temkin-score is het gemiddelde van de drie dimensiescores — zonder weging.',
+  t7_det:'1–3 · Detractor',t7_pas:'4–5 · Passief',t7_pro:'6–7 · Promoter',
+  t7_hint:'Klik op een score om te zien wat het betekent',t7_poor:'Zeer slecht (1)',t7_exc:'Uitstekend (7)',
+  t7_click:'Klik op een score hierboven',t7_click_sub:'Zie hoe elke score bijdraagt aan het net goodness percentage.',
+  t7_example_title:'Voorbeeld: Inspanning dimensie — 100 respondenten',t7_example_sub:'Berekening van de net goodness score:',
+  t7_promoters_eg:'Promoters (6–7)',t7_detractors_eg:'Detractors (1–3)',t7_net_goodness:'Net Goodness',
+  t7_passives_note:'De 35 Passieven (4–5) worden uitgesloten — net als bij NPS.',
+  t7_overall_title:'Overall score = gemiddelde van de drie dimensies',dim_success2:'Succes',dim_effort2:'Inspanning',dim_emotion2:'Emotie',t7_txr:'TxR Score',
+  t7_note:'Alle drie dimensies wegen even zwaar — er wordt geen weging toegepast.',
+  explore_dims_label:'Verken de Drie Dimensies',tab_success:'✅ Succes',tab_effort:'⚡ Inspanning',tab_emotion:'❤️ Emotie',
+  s_q:'"Heeft de ervaring aan uw behoeften voldaan?"',s_desc:'Succes meet of klanten konden bereiken wat ze wilden. De functionele basis — zonder succes compenseren warmte en lage inspanning niets.',why_matters:'Waarom het belangrijk is',s_why:'Zelfs positief gestemde klanten vertrekken als de kernervaring structureel faalt.',example:'Voorbeeld',s_eg:'Een klant probeert zijn bezorgadres te wijzigen. Lukte dit direct? Of kostte het 3 telefoontjes?',sim_s:'Simuleer een Succes score (1–7)',failed:'Volledig mislukt (1)',excellent_sim:'Uitstekend (7)',seven_pt_lbl:'7-punts beoordeling · telt mee in net goodness',s_int_6:'Score 6 (Promoter) — Sterk resultaat. Verhoogt uw Succes net goodness.',
+  e_q:'"Hoe gemakkelijk was het om uw doel te bereiken?"',e_desc:'Inspanning meet wrijving. Wrijving verminderen levert meer loyaliteit dan extra service. Score 1–3 = Detractor, 4–5 = Passief, 6–7 = Promoter.',why_matters2:'Waarom het belangrijk is',e_why:'Klanten met hoge inspanning zijn veel sneller geneigd te vertrekken dan klanten zonder positieve verrassing.',example2:'Voorbeeld',e_eg:'De klacht werd opgelost — maar de klant belde 3 keer en wachtte 45 minuten. Succes ✓, maar Inspanning score: 2 van 7 (Detractor).',sim_e:'Simuleer een Inspanning score (1–7)',hard:'Zeer moeilijk (1)',effortless:'Moeiteloos (7)',passive_excl:'7-punts beoordeling · Passief = uitgesloten van net goodness',e_int_5:'Score 5 (Passief) — Uitgesloten van net goodness. Beheersbaar maar niet wrijvingsloos.',
+  m_q:'"Hoe voelde de ervaring?"',m_desc:'Emotie meet het gevoel dat achterblijft. Vaak de sterkste loyaliteitsvoorspeller. Score 1–3 = Detractor, 4–5 = Passief, 6–7 = Promoter.',why_matters3:'Waarom het belangrijk is',m_why:'Herinneringen sturen toekomstig gedrag. Een technisch geslaagde interactie die koud aanvoelde, wordt negatief onthouden.',example3:'Voorbeeld',m_eg:'"De medewerker loste mijn probleem op maar was afstandelijk." Succes ✓, Emotie: 2 van 7 (Detractor).',sim_m:'Simuleer een Emotie score (1–7)',very_neg:'Zeer negatief (1)',very_pos:'Zeer positief (7)',passive_excl2:'7-punts beoordeling · Passief = uitgesloten van net goodness',m_int_5:'Score 5 (Passief) — Uitgesloten van net goodness. Acceptabel maar niet warm.',
+  part03_label:'Deel 03 — NPS + Temkin Samen',combined_title:'Het kompas & de kaart.',combined_sub:'NPS (0–10) zegt wáár u staat op loyaliteit. Temkin (1–7, drie dimensies) zegt waaróm. Samen vormen ze een compleet navigatiesysteem.',
+  corr_title:'Pearson Correlatie — NPS vs. Temkin Ratings',corr_sub:'XM Institute (2023), 319 bedrijven, 20 sectoren. Sterk gecorreleerd maar meten onderscheidende aspecten. Ze versterken elkaar — geen vervanging.',
+  nps_signal_title:'NPS — Het Loyaliteitssignaal',nps_scale_note:'0–10 schaal · Één vraag',
+  nps_pro1:'Volgt loyaliteitstrend met één vergelijkbaar getal',nps_pro2:'Benchmark extern tegen concurrenten en sectoregemiddelden',nps_pro3:'Sterk gecorreleerd met churn, CLV en mond-tot-mondreclame',nps_pro4:'Hoge responsraten — minimale enquêtemoeheid',nps_con1:'Legt niet uit wat de score omhoog of omlaag drijft',nps_con2:'Cultureel bevooroordeeld — scorenormen verschillen per land',
+  txr_diag_title:'Temkin — De Diagnostische Laag',txr_scale_note:'1–7 schaal · Drie gelijke dimensies',
+  txr_pro1:'Geeft aan welke dimensie ontevredenheid veroorzaakt',txr_pro2:'Maakt gerichte actie mogelijk — wrijving aanpakken, empathie trainen of product verbeteren',txr_pro3:'Open standaard benchmark — 300+ bedrijven, 20 sectoren',txr_pro4:'Cultureel robuuster dan NPS voor vergelijking tussen markten',txr_con1:'Vereist drie vragen — iets meer respondentinspanning',txr_con2:'Minder externe benchmarkdatasets dan NPS',
+  scenario_label:'Scenario Explorer — Hoe Ze Samenwerken',
+  sc_drop:'NPS Daalt',sc_bench:'Concurrentievergelijking',sc_invest:'CX Investering',sc_culture:'Nieuwe Markt',
+  nps_says:'NPS zegt',temkin_adds:'Temkin voegt toe',action:'Actie',
+  nps_says2:'NPS zegt',temkin_adds2:'Temkin voegt toe',action2:'Actie',
+  nps_says3:'NPS zegt',temkin_adds3:'Temkin voegt toe',action3:'Actie',
+  nps_says4:'NPS zegt',temkin_adds4:'Temkin voegt toe',action4:'Actie',
+  sc1_sit:'"Onze NPS daalde van +42 naar +34 dit kwartaal."',sc1_nps:'NPS signaleert dat loyaliteit is gedaald. Maar de 0–10 score alleen kan niet zeggen of het probleem in het product, proces of mensen zit.',sc1_txr:'Temkin-scores: Succes stabiel, Inspanning verbeterd, maar Emotie net goodness daalde 14 punten. Het probleem is emotioneel.',sc1_act:'Beluister gesprekken. Identificeer of een beleids- of personeelswijziging de Emotiedaling veroorzaakte. Target empathietraining.',
+  sc2_sit:'"Onze NPS van +38 matcht het sectorgemiddelde."',sc2_nps:'Gemiddeld zijn betekent geen differentiatie. Maar NPS zegt niet waar u moet ingrijpen.',sc2_txr:'Temkin toont: uw Inspanning net goodness is 18 punten onder de sectorleider. Wrijving in uw journeys remt loyaliteit.',sc2_act:'Stel een 12-maandsdoel om het Inspanningsgat te dichten. Audit de 5 drukste journeys op wrijving.',
+  sc3_sit:'"We hebben budget voor één grote CX-investering. Wat prioriteren we?"',sc3_nps:'NPS per touchpoint toont dat post-purchase support het laagst scoort. Maar niet welk type investering nodig is.',sc3_txr:'Temkin scores: Succes 6,1 (Promoter), Inspanning 2,8 (Detractor – kritisch), Emotie 5,2 (Passief). Het knelpunt is Inspanning.',sc3_act:'Investeer in selfservice en intelligente routering — niet in extra personeel. Doel: contacten per oplossing van 2,8 naar 1,4.',
+  sc4_sit:'"Onze Japanse markt NPS van +12 is ver onder onze VS-score van +56."',sc4_nps:'Ruwe NPS-vergelijking tussen markten is misleidend — Japanse consumenten scoren systematisch lager op 0–10 schalen.',sc4_txr:'Temkin 7-puntsscores in Japan liggen boven lokale benchmarks voor alle drie dimensies. Het NPS-verschil is een cultureel artefact.',sc4_act:'Benchmark NPS lokaal. Gebruik Temkin net goodness scores voor vergelijking tussen markten — cultureel robuuster.',
+  part04_label:'Deel 04 — Hoe te gebruiken',practical_title:'Zes stappen van meting naar actie.',practical_sub:'Meten zonder actie ondernemen is de meest voorkomende fout in CX-programma\'s.',
+  step1_t:'Segmenteer, middel niet',step1_d:'Totale NPS verbergt echte problemen. Meet per product, regio, touchpoint en segment. Pas alle drie Temkin-dimensies toe per segment.',step1_tip:'Chat NPS +62 vs. telefoon +18 → Temkin onthult of het een Inspannings- of Emotiegap is.',
+  step2_t:'Analyseer open antwoorden',step2_d:'De NPS-score zegt wát — de open vraag zegt waaróm. Map thema\'s naar de drie Temkin-dimensies.',step2_tip:'Leveringstijdklachten → Inspanning. Afstandelijke toon → Emotie. Factuurfouten → Succes.',
+  step3_t:'Sluit de loop — snel',step3_d:'Neem contact op met Detractors binnen 48 uur. Bedank Promoters. Vraag Passieven wat hen naar een 6 of 7 op Temkin zou brengen.',step3_tip:'Systematische opvolging converteert 20–30% van Detractors binnen 90 dagen.',
+  step4_t:'Bekijk de trend',step4_d:'Één meting zegt weinig. Volg NPS en alle drie Temkin-dimensies in de tijd.',step4_tip:'NPS +12 → +28 in 6 maanden na betere communicatie — de Inspanningsdimensie dreef de winst.',
+  step5_t:'Koppel aan bedrijfsdata',step5_d:'Verbind NPS en Temkin aan churn, CLV en herhalingsaankopen. Bewijs causaliteit voor de business case.',step5_tip:'Promoters genereren 3–4× hogere lifetime value. Lage Inspanning net goodness voorspelt 40% lager churn.',
+  step6_t:'Maak het overal zichtbaar',step6_d:'Deel NPS en Temkin-dashboards organisatiebreed. Frontlinie-teams met wekelijkse zichtbaarheid verbeteren 2× sneller.',step6_tip:'Toon elke Temkin-dimensie per team: Succes voor product, Inspanning voor operaties, Emotie voor service.',
+  part05_label:'Deel 05 — Valkuilen & Kritiek',pitfalls_title:'Krachtig. Niet perfect.',pitfalls_sub:'Begrijpen waar deze frameworks tekortschieten is even belangrijk als hun sterktes kennen.',
+  pit1_t:'Meten ≠ Handelen',pit1_d:'Maandelijks data verzamelen zonder structurele veranderingen is de meest voorkomende fout.',pit1_f:'Verplicht voor elke cyclus een actieplan voor de laagst scorende Temkin-dimensie.',
+  pit2_t:'Gamification & Score Coaching',pit2_d:'Medewerkers die worden beoordeeld op NPS sturen klanten aan op hoge scores. Dit vervuilt data.',pit2_f:'Koppel NPS of Temkin nooit aan individuele bonussen.',
+  pit3_t:'Survivor Bias',pit3_d:'Vertrokken klanten vullen geen enquêtes in. Beide metrics zijn overbewogen met klanten die bleven.',pit3_f:'Combineer met exit surveys en churn-interviews.',
+  pit4_t:'Cross-culturele Vergelijkingsfouten',pit4_d:'Japanners scoren zelden 9–10 op NPS. Een globaal dashboard dat alle markten gelijk behandelt is misleidend.',pit4_f:'Benchmark NPS lokaal. Gebruik Temkin net goodness voor cross-markt vergelijking.',
+  pit5_t:'NPS als Ultieme Metric Behandelen',pit5_d:'Bedrijven met hoge NPS zijn gefaald; bedrijven met lage NPS zijn gegroeid. NPS is één input — geen strategie.',pit5_f:'Combineer NPS met alle drie Temkin-dimensies en een Customer Effort Score.',
+  pit6_t:'De Temkin Emotie-kloof Negeren',pit6_d:'Technische en B2B-organisaties wuiven Emotie weg. Het is consequent de sterkste loyaliteitsvoorspeller.',pit6_f:'Focus op het elimineren van negatieve emotionele ervaringen (scores 1–3).',
+  quiz_eyebrow:'Deel 06 — Kennisquiz',quiz_title:'Test je kennis.',quiz_sub:'10 vragen over NPS, Temkin Experience Ratings, en hoe je beide frameworks in de praktijk toepast.',
+  next_q:'Volgende vraag →',restart_quiz:'Quiz herstarten ↺',qz_question_of:'Vraag {n} van {t}',qz_correct:'Correct!',qz_not_quite:'Niet helemaal.',
+  qz_score_outstanding_lbl:'Uitstekend! 🏆',qz_score_outstanding_sub:'Je beheerst zowel NPS als Temkin. Tijd om dit in de praktijk toe te passen.',
+  qz_score_well_lbl:'Goed gedaan! ✓',qz_score_well_sub:'Sterk begrip. Bekijk de onderdelen waar je twijfelde om je kennis verder aan te scherpen.',
+  qz_score_start_lbl:'Goede start →',qz_score_start_sub:'Een prima basis. Lees de Temkin 7-puntsschaal en de Gecombineerd-sectie nog eens door.',
+  qz_score_keep_lbl:'Blijf leren ↺',qz_score_keep_sub:'Geen zorgen - bekijk de gids hierboven opnieuw en probeer het nog eens.',
+  nav_home2:'Overzicht',nav_nps2:'NPS',nav_temkin2:'Temkin',nav_combined2:'Gecombineerd',nav_practical2:'Gebruik',nav_pitfalls2:'Valkuilen',nav_quiz2:'Quiz'
+},
+es:{
+  nav_home:'Inicio',nav_nps:'NPS',nav_temkin:'Temkin',nav_combined:'Combinado',nav_practical:'Cómo usarlo',nav_pitfalls:'Errores',nav_quiz:'Examen',
+  hero_eyebrow:'Guía de aprendizaje interactiva · Damen Shipyards Group',hero_title_3:'Explicado',
+  hero_sub:'Dos de los marcos de CX más potentes — qué miden, cómo funcionan y cómo usarlos juntos para impulsar mejoras reales.',
+  hero_cta1:'Empezar con NPS ↓',hero_cta2:'Ir a la vista combinada',nps_score_label:'Puntuación NPS',dim_success:'Éxito',dim_effort:'Esfuerzo',dim_emotion:'Emoción',scroll_hint:'Desplázate para explorar',
+  part01_label:'Parte 01 — Net Promoter Score',nps_title:'Una pregunta. Una señal de lealtad.',
+  nps_sub:'Introducido por Fred Reichheld en 2003. Los clientes puntúan en una escala de 0–10: 0–6 = Detractor, 7–8 = Pasivo, 9–10 = Promotor. NPS = %Promotores − %Detractores.',
+  nps_question:'"¿Cuán probable es que recomiende nuestra organización a un amigo o colega?"',
+  scale_low:'Nada probable',scale_high:'Muy probable',score_label:'Puntuación',click_score:'Haz clic en una puntuación para ver qué significa.',
+  three_groups_label:'Los Tres Grupos',
+  det_range:'PUNTUACIÓN 0–6 · DETRACTORES',det_name:'Detractores',det_desc:'Clientes insatisfechos que activamente difunden opiniones negativas.',det_quote:'Me puse en contacto con soporte 3 veces y mi problema sigue sin resolverse.',det_author:'— Cliente, sector telecomunicaciones',
+  pas_range:'PUNTUACIÓN 7–8 · PASIVOS',pas_name:'Pasivos',pas_desc:'Satisfechos pero sin entusiasmo. Cambian fácilmente a un competidor con una oferta mejor.',pas_quote:'Funciona bien, sin quejas. ¿Espectacular? No realmente. Solo lo uso.',pas_author:'— Cliente, sector software',
+  pro_range:'PUNTUACIÓN 9–10 · PROMOTORES',pro_name:'Promotores',pro_desc:'Fans leales que recomiendan activamente. Su canal de marketing más barato y efectivo.',pro_quote:'Ya he referido al menos 5 amigos. Su servicio es verdaderamente excepcional.',pro_author:'— Cliente, sector e-commerce',
+  formula_label:'La Fórmula',promoters:'Promotores',of_respondents:'de encuestados',detractors:'Detractores',of_respondents2:'de encuestados',nps_score_lbl:'Puntuación NPS',excellent:'Excelente',
+  promoters2:'Promotores',detractors2:'Detractores',nps_score_lbl2:'Puntuación NPS',
+  calc_title:'🧮 Calculadora NPS en vivo — arrastra los controles',calc_above_avg:'Por encima del promedio global de +33',
+  grade_crit:'Crítico',grade_fair:'Regular',grade_good:'Bueno',grade_wc:'Clase mundial',
+  part02_label:'Parte 02 — Temkin Experience Ratings',temkin_title:'Tres dimensiones. Una imagen completa.',
+  temkin_sub:'Desarrollado por Bruce Temkin (Qualtrics XM Institute). Donde el NPS mide la lealtad, Temkin diagnostica por qué — a través de tres dimensiones iguales en una escala de 7 puntos.',
+  stat_consumers:'consumidores estadounidenses encuestados',stat_companies:'empresas calificadas',stat_industries:'industrias cubiertas',stat_dims:'dimensiones iguales',
+  t7_label:'La Escala de 7 Puntos — Cómo Funciona',
+  t7_intro:'A diferencia del NPS (0–10), cada dimensión de Temkin se mide en una escala de 7 puntos. Puntuaciones 1–3 = Detractor, 4–5 = Pasivo, 6–7 = Promotor. La puntuación = %Promotores − %Detractores. Los pasivos se excluyen, igual que en el NPS.',
+  t7_det:'1–3 · Detractor',t7_pas:'4–5 · Pasivo',t7_pro:'6–7 · Promotor',
+  t7_hint:'Haz clic en una puntuación para ver qué significa',t7_poor:'Muy malo (1)',t7_exc:'Excelente (7)',
+  t7_click:'Haz clic en una puntuación arriba',t7_click_sub:'Vea cómo cada puntuación contribuye al porcentaje de net goodness.',
+  t7_example_title:'Ejemplo: dimensión Esfuerzo — 100 encuestados',t7_example_sub:'Cálculo del net goodness:',
+  t7_promoters_eg:'Promotores (6–7)',t7_detractors_eg:'Detractores (1–3)',t7_net_goodness:'Net Goodness',
+  t7_passives_note:'Los 35 pasivos (4–5) se excluyen — igual que en el NPS.',
+  t7_overall_title:'Puntuación general = promedio de las tres dimensiones',dim_success2:'Éxito',dim_effort2:'Esfuerzo',dim_emotion2:'Emoción',t7_txr:'Puntuación TxR',
+  t7_note:'Las tres dimensiones tienen el mismo peso — no se aplica ponderación.',
+  explore_dims_label:'Explorar las Tres Dimensiones',tab_success:'✅ Éxito',tab_effort:'⚡ Esfuerzo',tab_emotion:'❤️ Emoción',
+  s_q:'"¿La experiencia satisfizo sus necesidades?"',s_desc:'Éxito mide si los clientes lograron lo que vinieron a hacer.',why_matters:'Por qué importa',s_why:'Incluso los clientes con sentimientos positivos pueden abandonar si la experiencia falla.',example:'Ejemplo',s_eg:'Un cliente intenta cambiar su dirección de entrega. ¿Lo logró a la primera?',sim_s:'Simular una puntuación de Éxito (1–7)',failed:'Fracaso total (1)',excellent_sim:'Excelente (7)',seven_pt_lbl:'Calificación de 7 puntos · contribuye al net goodness',s_int_6:'Puntuación 6 (Promotor) — Resultado sólido. Aumenta su net goodness de Éxito.',
+  e_q:'"¿Qué tan fácil fue lograr su objetivo?"',e_desc:'Esfuerzo mide la fricción. Reducir el esfuerzo impulsa más la lealtad que agregar deleite.',why_matters2:'Por qué importa',e_why:'Los clientes con alto esfuerzo tienen mucha más probabilidad de abandonar.',example2:'Ejemplo',e_eg:'La queja se resolvió — pero el cliente llamó 3 veces y esperó 45 minutos. Éxito ✓, Esfuerzo: 2 de 7 (Detractor).',sim_e:'Simular una puntuación de Esfuerzo (1–7)',hard:'Muy difícil (1)',effortless:'Sin esfuerzo (7)',passive_excl:'Calificación de 7 puntos · Pasivo = excluido del net goodness',e_int_5:'Puntuación 5 (Pasivo) — Excluido del net goodness. Manejable pero no sin fricción.',
+  m_q:'"¿Cómo le hizo sentir la experiencia?"',m_desc:'La emoción captura el residuo afectivo. A menudo el predictor de lealtad más fuerte.',why_matters3:'Por qué importa',m_why:'Los recuerdos impulsan el comportamiento futuro. Una interacción fría se recuerda negativamente.',example3:'Ejemplo',m_eg:'"El agente resolvió mi problema pero fue frío." Éxito ✓, Emoción: 2 de 7 (Detractor).',sim_m:'Simular una puntuación de Emoción (1–7)',very_neg:'Muy negativo (1)',very_pos:'Muy positivo (7)',passive_excl2:'Calificación de 7 puntos · Pasivo = excluido del net goodness',m_int_5:'Puntuación 5 (Pasivo) — Excluido del net goodness. Aceptable pero no cálido.',
+  part03_label:'Parte 03 — NPS + Temkin Juntos',combined_title:'La brújula y el mapa.',combined_sub:'NPS (0–10) dice dónde está en lealtad. Temkin (1–7, tres dimensiones) dice por qué. Juntos forman un sistema de navegación completo.',
+  corr_title:'Correlación de Pearson — NPS vs. Calificaciones Temkin',corr_sub:'XM Institute (2023), 319 empresas, 20 industrias. Altamente correlacionados pero miden aspectos distintos. Se refuerzan mutuamente.',
+  nps_signal_title:'NPS — La Señal de Lealtad',nps_scale_note:'Escala 0–10 · Una pregunta',
+  nps_pro1:'Rastrea la trayectoria de lealtad con un número comparable',nps_pro2:'Referencia externa frente a competidores y promedios de la industria',nps_pro3:'Altamente correlacionado con churn, CLV y boca a boca',nps_pro4:'Altas tasas de respuesta — mínima fatiga de encuesta',nps_con1:'No puede explicar qué está impulsando la puntuación',nps_con2:'Sesgo cultural — las normas de puntuación varían entre países',
+  txr_diag_title:'Temkin — La Capa Diagnóstica',txr_scale_note:'Escala 1–7 · Tres dimensiones iguales',
+  txr_pro1:'Identifica qué dimensión impulsa la insatisfacción',txr_pro2:'Permite acciones dirigidas — reducir fricción, entrenar empatía o mejorar producto',txr_pro3:'Estándar abierto — 300+ empresas, 20 industrias',txr_pro4:'Más resistente culturalmente que el NPS para comparación entre mercados',txr_con1:'Requiere tres preguntas — ligeramente más esfuerzo del encuestado',txr_con2:'Menos conjuntos de datos de referencia externos que el NPS',
+  scenario_label:'Explorador de Escenarios — Cómo Funcionan Juntos',
+  sc_drop:'NPS Cae',sc_bench:'Comparación Competidores',sc_invest:'Inversión CX',sc_culture:'Nuevo Mercado',
+  nps_says:'El NPS dice',temkin_adds:'Temkin añade',action:'Acción',
+  nps_says2:'El NPS dice',temkin_adds2:'Temkin añade',action2:'Acción',
+  nps_says3:'El NPS dice',temkin_adds3:'Temkin añade',action3:'Acción',
+  nps_says4:'El NPS dice',temkin_adds4:'Temkin añade',action4:'Acción',
+  sc1_sit:'"Nuestro NPS cayó de +42 a +34 este trimestre."',sc1_nps:'El NPS señala que la lealtad ha disminuido. Pero la puntuación 0–10 no puede decirle si el problema es de producto, proceso o personas.',sc1_txr:'Temkin muestra Éxito estable, Esfuerzo mejorado, pero el net goodness de Emoción cayó 14 puntos. El problema es emocional.',sc1_act:'Audite grabaciones de llamadas. Identifique si un cambio de personal desencadenó la caída de Emoción.',
+  sc2_sit:'"Nuestro NPS de +38 coincide con el promedio de la industria."',sc2_nps:'Ser promedio significa sin diferenciación. Pero el NPS no puede decirle dónde actuar.',sc2_txr:'Temkin muestra que su net goodness de Esfuerzo está 18 puntos por debajo del líder de la industria.',sc2_act:'Establezca un objetivo de 12 meses para cerrar la brecha de Esfuerzo. Audite los 5 journeys principales.',
+  sc3_sit:'"Tenemos presupuesto para una gran iniciativa de CX. ¿Qué priorizamos?"',sc3_nps:'El NPS por punto de contacto muestra que el soporte post-compra obtiene las puntuaciones más bajas.',sc3_txr:'Temkin: Éxito 6,1 (Promotor), Esfuerzo 2,8 (Detractor — crítico), Emoción 5,2 (Pasivo). El cuello de botella es el Esfuerzo.',sc3_act:'Invierta en autoservicio y enrutamiento inteligente — no en personal adicional. Objetivo: contactos por resolución de 2,8 a 1,4.',
+  sc4_sit:'"Nuestro NPS en Japón de +12 está muy por debajo de nuestra puntuación en EE.UU. de +56."',sc4_nps:'La comparación directa de NPS entre mercados es engañosa — los consumidores japoneses sistemáticamente puntúan más bajo.',sc4_txr:'Las puntuaciones Temkin de 7 puntos en Japón están por encima de los benchmarks locales en las tres dimensiones. La diferencia del NPS es un artefacto cultural.',sc4_act:'Compare el NPS localmente. Use las puntuaciones net goodness de Temkin para comparación entre mercados.',
+  part04_label:'Parte 04 — Cómo Usarlo',practical_title:'Seis pasos de la medición a la acción.',practical_sub:'Medir sin actuar es el error más común en los programas de CX.',
+  step1_t:'Segmentar, No Promediar',step1_d:'El NPS general oculta los problemas reales. Mida por producto, región y punto de contacto.',step1_tip:'Chat NPS +62 vs. teléfono +18 → Temkin revela si es una brecha de Esfuerzo o Emoción.',
+  step2_t:'Analizar las Respuestas Abiertas',step2_d:'La puntuación dice qué — la pregunta abierta dice por qué.',step2_tip:'Quejas de tiempo de entrega → Esfuerzo. Tono distante → Emoción. Error de factura → Éxito.',
+  step3_t:'Cerrar el Ciclo — Rápido',step3_d:'Contacte a los Detractores en 48 horas. Agradezca a los Promotores. Pregunte a los Pasivos qué los movería a un 6 o 7.',step3_tip:'El seguimiento sistemático convierte el 20–30% de los Detractores en 90 días.',
+  step4_t:'Observar la Tendencia',step4_d:'Una sola medición dice poco. Siga el NPS y las tres dimensiones de Temkin en el tiempo.',step4_tip:'NPS +12 → +28 en 6 meses tras mejorar la comunicación — la dimensión Esfuerzo impulsó la mejora.',
+  step5_t:'Vincular a Datos de Negocio',step5_d:'Conecte NPS y Temkin con churn, CLV y tasas de recompra. Demuestre causalidad.',step5_tip:'Los Promotores generan 3–4× más valor de vida. El bajo net goodness de Esfuerzo predice un 40% menos de churn.',
+  step6_t:'Hacerlo Visible en Toda la Organización',step6_d:'Comparta dashboards de NPS y Temkin en toda la organización. Los equipos con visibilidad semanal mejoran 2× más rápido.',step6_tip:'Muestre cada dimensión Temkin por equipo: Éxito para producto, Esfuerzo para operaciones, Emoción para servicio.',
+  part05_label:'Parte 05 — Errores y Críticas',pitfalls_title:'Potente. No perfecto.',pitfalls_sub:'Entender las limitaciones de estos marcos es tan importante como conocer sus fortalezas.',
+  pit1_t:'Medir ≠ Actuar',pit1_d:'Recopilar datos mensualmente sin cambios estructurales es el error más común.',pit1_f:'Exija un plan de acción para la dimensión Temkin más baja en cada ciclo.',
+  pit2_t:'Gamificación y Coaching de Puntuación',pit2_d:'Los empleados evaluados por NPS pueden influenciar a los clientes. Esto corrompe los datos.',pit2_f:'Nunca vincule el NPS o Temkin a bonos individuales.',
+  pit3_t:'Sesgo de Supervivencia',pit3_d:'Los clientes que se fueron no completan encuestas. Ambas métricas sobrerrepresentan a los que se quedaron.',pit3_f:'Combine con encuestas de salida y entrevistas de churn.',
+  pit4_t:'Errores de Comparación Intercultural',pit4_d:'Los japoneses rara vez puntúan 9–10 en NPS. Un dashboard global igual para todos distorsiona el rendimiento.',pit4_f:'Compare el NPS localmente. Use net goodness de Temkin para comparación entre mercados.',
+  pit5_t:'Tratar el NPS como la Métrica Definitiva',pit5_d:'Empresas con NPS alto han fracasado; empresas con NPS bajo han crecido.',pit5_f:'Combine NPS con las tres dimensiones de Temkin y un Customer Effort Score.',
+  pit6_t:'Ignorar la Brecha de Emoción de Temkin',pit6_d:'Las organizaciones técnicas y B2B desestiman la Emoción. Es el predictor de lealtad más fuerte.',pit6_f:'Concéntrese en eliminar experiencias emocionales negativas (puntuaciones 1–3).',
+  quiz_eyebrow:'Parte 06 — Examen de Conocimiento',quiz_title:'Pon a prueba tu conocimiento.',quiz_sub:'10 preguntas sobre NPS, Temkin Experience Ratings y cómo aplicar ambos marcos en la práctica.',
+  next_q:'Siguiente pregunta →',restart_quiz:'Reiniciar examen ↺',qz_question_of:'Pregunta {n} de {t}',qz_correct:'Correcto!',qz_not_quite:'Casi.',
+  qz_score_outstanding_lbl:'Sobresaliente! 🏆',qz_score_outstanding_sub:'Has dominado NPS y Temkin. Es momento de aplicarlo en la práctica.',
+  qz_score_well_lbl:'Muy bien! ✓',qz_score_well_sub:'Buen entendimiento. Revisa las secciones donde dudaste para reforzar el conocimiento.',
+  qz_score_start_lbl:'Buen comienzo →',qz_score_start_sub:'Buena base. Recomendamos releer la escala Temkin de 7 puntos y la vista combinada.',
+  qz_score_keep_lbl:'Sigue aprendiendo ↺',qz_score_keep_sub:'No pasa nada - repasa la guía y vuelve a intentarlo.',
+  nav_home2:'Resumen',nav_nps2:'NPS',nav_temkin2:'Temkin',nav_combined2:'Combinado',nav_practical2:'Uso',nav_pitfalls2:'Errores',nav_quiz2:'Examen'
+},
+fr:{
+  nav_home:'Accueil',nav_nps:'NPS',nav_temkin:'Temkin',nav_combined:'Combiné',nav_practical:'Comment utiliser',nav_pitfalls:'Écueils',nav_quiz:'Quiz',
+  hero_eyebrow:'Guide d\'apprentissage interactif · Damen Shipyards Group',hero_title_3:'Expliqué',
+  hero_sub:'Deux des frameworks CX les plus puissants — ce qu\'ils mesurent, comment ils fonctionnent, et comment les utiliser ensemble pour générer de vraies améliorations.',
+  hero_cta1:'Commencer avec NPS ↓',hero_cta2:'Aller à la vue combinée',nps_score_label:'Score NPS',dim_success:'Succès',dim_effort:'Effort',dim_emotion:'Émotion',scroll_hint:'Faites défiler pour explorer',
+  part01_label:'Partie 01 — Net Promoter Score',nps_title:'Une question. Un signal de fidélité.',
+  nps_sub:'Introduit par Fred Reichheld en 2003. Les clients évaluent sur une échelle de 0–10 : 0–6 = Détracteur, 7–8 = Passif, 9–10 = Promoteur. NPS = %Promoteurs − %Détracteurs.',
+  nps_question:'"Quelle est la probabilité que vous recommandiez notre organisation à un ami ou collègue ?"',
+  scale_low:'Pas du tout probable',scale_high:'Extrêmement probable',score_label:'Score',click_score:'Cliquez sur un score pour voir ce qu\'il signifie.',
+  three_groups_label:'Les Trois Groupes',
+  det_range:'SCORE 0–6 · DÉTRACTEURS',det_name:'Détracteurs',det_desc:'Clients mécontents qui propagent activement un bouche-à-oreille négatif.',det_quote:'J\'ai contacté le support 3 fois et mon problème n\'est toujours pas résolu.',det_author:'— Client, secteur télécoms',
+  pas_range:'SCORE 7–8 · PASSIFS',pas_name:'Passifs',pas_desc:'Satisfaits mais pas enthousiastes. Ils passent facilement à un concurrent avec une meilleure offre.',pas_quote:'Ça fonctionne bien, pas de plaintes. Spectaculaire ? Pas vraiment. Je l\'utilise juste.',pas_author:'— Client, secteur logiciel',
+  pro_range:'SCORE 9–10 · PROMOTEURS',pro_name:'Promoteurs',pro_desc:'Fans fidèles qui recommandent activement. Votre canal marketing le moins cher et le plus efficace.',pro_quote:'J\'ai déjà référé au moins 5 amis. Votre service est vraiment exceptionnel.',pro_author:'— Client, secteur e-commerce',
+  formula_label:'La Formule',promoters:'Promoteurs',of_respondents:'des répondants',detractors:'Détracteurs',of_respondents2:'des répondants',nps_score_lbl:'Score NPS',excellent:'Excellent',
+  promoters2:'Promoteurs',detractors2:'Détracteurs',nps_score_lbl2:'Score NPS',
+  calc_title:'🧮 Calculateur NPS en direct — faites glisser les curseurs',calc_above_avg:'Au-dessus de la moyenne mondiale de +33',
+  grade_crit:'Critique',grade_fair:'Passable',grade_good:'Bon',grade_wc:'Excellence mondiale',
+  part02_label:'Partie 02 — Temkin Experience Ratings',temkin_title:'Trois dimensions. Une image complète.',
+  temkin_sub:'Développé par Bruce Temkin (Qualtrics XM Institute). Là où le NPS mesure la fidélité, Temkin diagnostique pourquoi — via trois dimensions égales sur une échelle à 7 points.',
+  stat_consumers:'consommateurs américains interrogés',stat_companies:'entreprises notées',stat_industries:'industries couvertes',stat_dims:'dimensions égales',
+  t7_label:'L\'Échelle à 7 Points — Comment ça Marche',
+  t7_intro:'Contrairement au NPS (0–10), chaque dimension Temkin est mesurée sur une échelle à 7 points. Scores 1–3 = Détracteur, 4–5 = Passif, 6–7 = Promoteur. Le score = %Promoteurs − %Détracteurs. Les passifs sont exclus, exactement comme dans le NPS.',
+  t7_det:'1–3 · Détracteur',t7_pas:'4–5 · Passif',t7_pro:'6–7 · Promoteur',
+  t7_hint:'Cliquez sur un score pour voir ce qu\'il signifie',t7_poor:'Très mauvais (1)',t7_exc:'Excellent (7)',
+  t7_click:'Cliquez sur un score ci-dessus',t7_click_sub:'Voyez comment chaque score contribue au pourcentage de net goodness.',
+  t7_example_title:'Exemple : dimension Effort — 100 répondants',t7_example_sub:'Calcul du score net goodness :',
+  t7_promoters_eg:'Promoteurs (6–7)',t7_detractors_eg:'Détracteurs (1–3)',t7_net_goodness:'Net Goodness',
+  t7_passives_note:'Les 35 passifs (4–5) sont exclus — comme dans le NPS.',
+  t7_overall_title:'Score global = moyenne des trois dimensions',dim_success2:'Succès',dim_effort2:'Effort',dim_emotion2:'Émotion',t7_txr:'Score TxR',
+  t7_note:'Les trois dimensions ont un poids égal — aucune pondération n\'est appliquée.',
+  explore_dims_label:'Explorer les Trois Dimensions',tab_success:'✅ Succès',tab_effort:'⚡ Effort',tab_emotion:'❤️ Émotion',
+  s_q:'"L\'expérience a-t-elle répondu à vos besoins ?"',s_desc:'Le succès mesure si les clients ont pu accomplir ce qu\'ils venaient faire.',why_matters:'Pourquoi c\'est important',s_why:'Même les clients qui se sentent positifs peuvent partir si l\'expérience de base échoue.',example:'Exemple',s_eg:'Un client essaie de changer son adresse de livraison. A-t-il réussi du premier coup ?',sim_s:'Simuler un score Succès (1–7)',failed:'Échec total (1)',excellent_sim:'Excellent (7)',seven_pt_lbl:'Notation à 7 points · contribue au net goodness',s_int_6:'Score 6 (Promoteur) — Bon résultat. Augmente votre net goodness Succès.',
+  e_q:'"À quel point était-il facile d\'atteindre votre objectif ?"',e_desc:'L\'effort mesure la friction. Réduire l\'effort génère plus de fidélité qu\'ajouter du plaisir.',why_matters2:'Pourquoi c\'est important',e_why:'Les clients qui font beaucoup d\'efforts sont bien plus susceptibles de partir.',example2:'Exemple',e_eg:'La plainte a été résolue — mais le client a appelé 3 fois et attendu 45 minutes. Succès ✓, Effort : 2 sur 7 (Détracteur).',sim_e:'Simuler un score Effort (1–7)',hard:'Très difficile (1)',effortless:'Sans effort (7)',passive_excl:'Notation à 7 points · Passif = exclu du net goodness',e_int_5:'Score 5 (Passif) — Exclu du net goodness. Gérable mais pas sans friction.',
+  m_q:'"Comment l\'expérience vous a-t-elle fait vous sentir ?"',m_desc:'L\'émotion capture le résidu affectif. Souvent le prédicteur de fidélité le plus fort.',why_matters3:'Pourquoi c\'est important',m_why:'Les souvenirs guident le comportement futur. Une interaction froide est mémorisée négativement.',example3:'Exemple',m_eg:'"L\'agent a résolu mon problème mais était distant." Succès ✓, Émotion : 2 sur 7 (Détracteur).',sim_m:'Simuler un score Émotion (1–7)',very_neg:'Très négatif (1)',very_pos:'Très positif (7)',passive_excl2:'Notation à 7 points · Passif = exclu du net goodness',m_int_5:'Score 5 (Passif) — Exclu du net goodness. Acceptable mais pas chaleureux.',
+  part03_label:'Partie 03 — NPS + Temkin Ensemble',combined_title:'La boussole et la carte.',combined_sub:'Le NPS (0–10) dit où vous en êtes sur la fidélité. Temkin (1–7, trois dimensions) dit pourquoi. Ensemble, ils forment un système de navigation complet.',
+  corr_title:'Corrélation de Pearson — NPS vs. Temkin Ratings',corr_sub:'XM Institute (2023), 319 entreprises, 20 industries. Fortement corrélés mais mesurant des aspects distincts. Ils se renforcent mutuellement.',
+  nps_signal_title:'NPS — Le Signal de Fidélité',nps_scale_note:'Échelle 0–10 · Une question',
+  nps_pro1:'Suit la trajectoire de fidélité avec un seul chiffre comparable',nps_pro2:'Référence externe par rapport aux concurrents et aux moyennes sectorielles',nps_pro3:'Fortement corrélé avec le churn, la CLV et le bouche-à-oreille',nps_pro4:'Taux de réponse élevés — fatigue minimale des sondages',nps_con1:'Ne peut pas expliquer ce qui fait monter ou baisser le score',nps_con2:'Biais culturel — les normes de notation varient selon les pays',
+  txr_diag_title:'Temkin — La Couche Diagnostique',txr_scale_note:'Échelle 1–7 · Trois dimensions égales',
+  txr_pro1:'Identifie quelle dimension génère l\'insatisfaction',txr_pro2:'Permet des actions ciblées — réduire la friction, former à l\'empathie ou corriger le produit',txr_pro3:'Référentiel standard ouvert — 300+ entreprises, 20 industries',txr_pro4:'Plus robuste culturellement que le NPS pour la comparaison inter-marchés',txr_con1:'Nécessite trois questions — légèrement plus d\'effort du répondant',txr_con2:'Moins de bases de données de référence externes que le NPS',
+  scenario_label:'Explorateur de Scénarios — Comment Ils Fonctionnent Ensemble',
+  sc_drop:'NPS en Baisse',sc_bench:'Comparaison Concurrents',sc_invest:'Investissement CX',sc_culture:'Nouveau Marché',
+  nps_says:'Le NPS dit',temkin_adds:'Temkin ajoute',action:'Action',
+  nps_says2:'Le NPS dit',temkin_adds2:'Temkin ajoute',action2:'Action',
+  nps_says3:'Le NPS dit',temkin_adds3:'Temkin ajoute',action3:'Action',
+  nps_says4:'Le NPS dit',temkin_adds4:'Temkin ajoute',action4:'Action',
+  sc1_sit:'"Notre NPS est passé de +42 à +34 ce trimestre."',sc1_nps:'Le NPS signale que la fidélité a diminué. Mais le score 0–10 seul ne peut pas dire si le problème vient du produit, du processus ou des personnes.',sc1_txr:'Temkin montre Succès stable, Effort amélioré, mais le net goodness Émotion a chuté de 14 points. Le problème est émotionnel.',sc1_act:'Écoutez les enregistrements d\'appels. Identifiez si un changement de personnel a déclenché la baisse d\'Émotion.',
+  sc2_sit:'"Notre NPS de +38 correspond à la moyenne sectorielle."',sc2_nps:'Être dans la moyenne signifie aucune différentiation. Mais le NPS ne dit pas où agir.',sc2_txr:'Temkin montre que votre net goodness Effort est 18 points en dessous du leader sectoriel.',sc2_act:'Fixez un objectif sur 12 mois pour combler l\'écart Effort. Auditez les 5 parcours principaux.',
+  sc3_sit:'"Nous avons un budget pour une grande initiative CX. Que priorisons-nous ?"',sc3_nps:'Le NPS par point de contact montre que le support post-achat obtient les scores les plus bas.',sc3_txr:'Scores Temkin : Succès 6,1 (Promoteur), Effort 2,8 (Détracteur — critique), Émotion 5,2 (Passif). Le goulot d\'étranglement est l\'Effort.',sc3_act:'Investissez dans l\'outillage en libre-service et le routage intelligent — pas dans des effectifs. Objectif : contacts par résolution de 2,8 à 1,4.',
+  sc4_sit:'"Notre NPS au Japon de +12 est bien en dessous de notre score aux États-Unis de +56."',sc4_nps:'La comparaison NPS brute entre marchés est trompeuse — les consommateurs japonais notent systématiquement plus bas.',sc4_txr:'Les scores Temkin à 7 points au Japon sont au-dessus des benchmarks locaux pour les trois dimensions. La différence NPS est un artefact culturel.',sc4_act:'Comparez le NPS localement. Utilisez les scores net goodness de Temkin pour la comparaison inter-marchés.',
+  part04_label:'Partie 04 — Comment l\'Utiliser',practical_title:'Six étapes de la mesure à l\'action.',practical_sub:'Mesurer sans agir est l\'erreur la plus fréquente dans les programmes CX.',
+  step1_t:'Segmenter, Ne Pas Faire la Moyenne',step1_d:'Le NPS global cache les vrais problèmes. Mesurez par produit, région et point de contact.',step1_tip:'NPS chat +62 vs. téléphone +18 → Temkin révèle si c\'est un écart Effort ou Émotion.',
+  step2_t:'Analyser les Réponses Ouvertes',step2_d:'Le score dit quoi — la question ouverte dit pourquoi.',step2_tip:'Plaintes de délai de livraison → Effort. Ton distant → Émotion. Erreur de facturation → Succès.',
+  step3_t:'Fermer la Boucle — Vite',step3_d:'Contactez les Détracteurs dans les 48 heures. Remerciez les Promoteurs.',step3_tip:'Le suivi systématique convertit 20–30% des Détracteurs en 90 jours.',
+  step4_t:'Observer la Tendance',step4_d:'Une seule mesure ne dit rien. Suivez le NPS et les trois dimensions Temkin dans le temps.',step4_tip:'NPS +12 → +28 en 6 mois après amélioration de la communication — la dimension Effort a généré le gain.',
+  step5_t:'Lier aux Données Métier',step5_d:'Connectez NPS et Temkin au churn, à la CLV et aux achats répétés.',step5_tip:'Les Promoteurs génèrent 3–4× plus de valeur vie. Un faible net goodness Effort prédit 40% moins de churn.',
+  step6_t:'Le Rendre Visible Partout',step6_d:'Partagez les tableaux de bord NPS et Temkin dans toute l\'organisation.',step6_tip:'Affichez chaque dimension Temkin par équipe : Succès pour le produit, Effort pour les opérations, Émotion pour le service.',
+  part05_label:'Partie 05 — Écueils et Critiques',pitfalls_title:'Puissant. Pas parfait.',pitfalls_sub:'Comprendre les limites de ces frameworks est aussi important que connaître leurs forces.',
+  pit1_t:'Mesurer ≠ Agir',pit1_d:'Collecter des données mensuellement sans changements structurels est l\'erreur la plus courante.',pit1_f:'Exigez un plan d\'action pour la dimension Temkin la plus faible à chaque cycle.',
+  pit2_t:'Gamification et Coaching de Score',pit2_d:'Les employés évalués sur le NPS peuvent influencer les clients. Cela corrompt les données.',pit2_f:'Ne liez jamais NPS ou Temkin à des primes individuelles.',
+  pit3_t:'Biais de Survie',pit3_d:'Les clients partis ne remplissent pas les sondages. Les deux métriques surreprésentent ceux qui sont restés.',pit3_f:'Combinez avec des enquêtes de sortie et des entretiens sur le churn.',
+  pit4_t:'Erreurs de Comparaison Interculturelle',pit4_d:'Les Japonais notent rarement 9–10 sur le NPS. Un tableau de bord global traitant tous les marchés de la même façon fausse les résultats.',pit4_f:'Comparez le NPS localement. Utilisez le net goodness Temkin pour la comparaison inter-marchés.',
+  pit5_t:'Traiter le NPS comme la Métrique Ultime',pit5_d:'Des entreprises avec un NPS élevé ont échoué ; des entreprises avec un NPS faible ont grandi.',pit5_f:'Associez NPS aux trois dimensions Temkin et à un Customer Effort Score.',
+  pit6_t:'Ignorer l\'Écart Émotion de Temkin',pit6_d:'Les organisations techniques et B2B minimisent systématiquement l\'Émotion. C\'est pourtant le prédicteur de fidélité le plus fort.',pit6_f:'Concentrez-vous sur l\'élimination des expériences émotionnelles négatives (scores 1–3).',
+  quiz_eyebrow:'Partie 06 — Quiz de Connaissances',quiz_title:'Testez vos connaissances.',quiz_sub:'10 questions sur le NPS, les Temkin Experience Ratings et comment appliquer les deux frameworks en pratique.',
+  next_q:'Question suivante →',restart_quiz:'Recommencer le quiz ↺',qz_question_of:'Question {n} sur {t}',qz_correct:'Correct!',qz_not_quite:'Pas tout a fait.',
+  qz_score_outstanding_lbl:'Excellent! 🏆',qz_score_outstanding_sub:'Vous maitrisez a la fois le NPS et Temkin. Il est temps de l appliquer.',
+  qz_score_well_lbl:'Bien joue! ✓',qz_score_well_sub:'Bonne comprehension. Revoyez les sections ou vous avez hesite.',
+  qz_score_start_lbl:'Bon debut →',qz_score_start_sub:'Base solide. Relisez la section sur l echelle Temkin a 7 points et la vue combinee.',
+  qz_score_keep_lbl:'Continuez a apprendre ↺',qz_score_keep_sub:'Pas de souci - revisitez le guide ci-dessus et recommencez.',
+  nav_home2:'Vue d\'ensemble',nav_nps2:'NPS',nav_temkin2:'Temkin',nav_combined2:'Combiné',nav_practical2:'Utilisation',nav_pitfalls2:'Écueils',nav_quiz2:'Quiz'
+}
+};
+
+function setLang(l){
+  setLangInner(l);
+  document.querySelectorAll('.lang-sel').forEach(b=>{b.style.borderColor='';b.style.color='';});
+  event.target.style.borderColor='var(--blue)';event.target.style.color='var(--blue)';
+  // sync mobile
+  document.querySelectorAll('.mob-lang-btn').forEach(b=>b.classList.remove('active'));
+}
+
+let curLang='en';
+function T(key,fallback){return(langs[curLang]&&langs[curLang][key])||fallback||key;}
+
+// ── NAV & SCROLL ──────────────────────────────────────────────
+function goto(id){document.getElementById(id).scrollIntoView({behavior:'smooth'})}
+window.addEventListener('scroll',()=>{
+  const h=document.documentElement.scrollHeight-window.innerHeight;
+  document.getElementById('progress').style.width=(window.scrollY/h*100)+'%';
+  const ids=['hero','nps','temkin','combined','practical','pitfalls','quiz'];
+  const mid=window.innerHeight/2;
+  ids.forEach((id,i)=>{
+    const el=document.getElementById(id);if(!el)return;
+    const r=el.getBoundingClientRect();
+    const btn=document.querySelectorAll('.nb')[i];
+    if(btn){if(r.top<=mid&&r.bottom>=mid)btn.classList.add('on');else btn.classList.remove('on');}
+  });
+});
+
+// ── REVEAL ───────────────────────────────────────────────────
+const obs=new IntersectionObserver(e=>{e.forEach(x=>{if(x.isIntersecting)x.target.classList.add('in')})},{threshold:.07});
+document.querySelectorAll('.rv').forEach(el=>obs.observe(el));
+
+// ── RING ─────────────────────────────────────────────────────
+setTimeout(()=>{
+  const c=document.getElementById('ringC');
+  if(c){const ci=2*Math.PI*100;c.style.transition='stroke-dashoffset 2s ease';c.style.strokeDashoffset=ci*(1-.74);}
+},400);
+
+// ── NPS SCALE ─────────────────────────────────────────────────
+const npsD={
+  0:{g:'Detractor',c:'var(--red)',d:T('nps_res_0','Very unhappy. Actively spreading negative word-of-mouth. High risk to growth and reputation.')},
+  1:{g:'Detractor',c:'var(--red)',d:T('nps_res_1','Deeply dissatisfied. Likely to warn others away.')},
+  2:{g:'Detractor',c:'var(--red)',d:T('nps_res_2','Significant dissatisfaction. Unlikely to return and likely to warn others.')},
+  3:{g:'Detractor',c:'var(--red)',d:T('nps_res_3','Unhappy. The core experience has clearly failed to meet expectations.')},
+  4:{g:'Detractor',c:'var(--red)',d:T('nps_res_4','Moderately dissatisfied. Clear experience gaps need addressing.')},
+  5:{g:'Detractor',c:'var(--red)',d:T('nps_res_5','Neutral to negative. Would not recommend and may switch.')},
+  6:{g:'Detractor',c:'var(--red)',d:T('nps_res_6','Lowest Detractor. Close to Passive but still unlikely to recommend.')},
+  7:{g:'Passive',  c:'#a07800',  d:T('nps_res_7','Satisfied but unenthusiastic. Will switch to a better offer without hesitation.')},
+  8:{g:'Passive',  c:'#a07800',  d:T('nps_res_8','Reasonably content. Not a risk, but not an advocate. Easy to lose to a competitor.')},
+  9:{g:'Promoter', c:'#0a7048',  d:T('nps_res_9','Loyal fan. Very likely to recommend actively and unlikely to consider switching.')},
+  10:{g:'Promoter',c:'#0a7048', d:T('nps_res_10','Strongest advocate. Will actively promote your brand and defend it when challenged.')}
+};
+document.querySelectorAll('#npsRow .sb').forEach(btn=>{
+  btn.addEventListener('click',()=>{
+    document.querySelectorAll('#npsRow .sb').forEach(b=>b.classList.remove('on'));
+    btn.classList.add('on');
+    const n=parseInt(btn.dataset.n),d=npsD[n];
+    const p=document.getElementById('nRes');p.classList.add('on');
+    document.getElementById('rSc').textContent=n;document.getElementById('rSc').style.color=d.c;
+    document.getElementById('rGr').textContent=d.g;document.getElementById('rGr').style.color=d.c;
+    document.getElementById('rDe').textContent=d.d;
+  });
+});
+
+// ── CALC ──────────────────────────────────────────────────────
+function doCalc(){
+  let p=parseInt(document.getElementById('pSl').value);
+  let d=parseInt(document.getElementById('dSl').value);
+  if(p+d>100){d=100-p;document.getElementById('dSl').value=d;}
+  document.getElementById('pV').textContent=p+'%';document.getElementById('dV').textContent=d+'%';
+  const n=p-d;const el=document.getElementById('cNum');el.textContent=(n>=0?'+':'')+n;
+  const g=document.getElementById('cGr'),nt=document.getElementById('cNt');
+  if(n>=70){el.style.color='var(--orange)';g.textContent='World-class 🏆';g.style.color='var(--orange)';nt.textContent=T('calc_wc','Apple and Tesla territory — extremely rare.');}
+  else if(n>=50){el.style.color='#0a7048';g.textContent='Excellent ✓✓';g.style.color='#0a7048';nt.textContent=T('calc_exc','Significantly above the global average.');}
+  else if(n>=30){el.style.color='#0a7048';g.textContent='Good ✓';g.style.color='#0a7048';nt.textContent=T('calc_good','Above the global average of +33.');}
+  else if(n>=0){el.style.color='#a07800';g.textContent='Fair →';g.style.color='#a07800';nt.textContent=T('calc_fair','Below average. Improvement possible.');}
+  else{el.style.color='var(--red)';g.textContent='Critical ✗';g.style.color='var(--red)';nt.textContent=T('calc_crit','More Detractors than Promoters. Urgent action required.');}
+}
+document.getElementById('pSl').addEventListener('input',doCalc);
+document.getElementById('dSl').addEventListener('input',doCalc);
+doCalc();
+
+// ── TEMKIN 7-PT ───────────────────────────────────────────────
+const t7D={
+  1:{c:'#ff7070',d:T('t7_1','Score 1 — Very poor. Counted as Detractor. Directly lowers your net goodness percentage.')},
+  2:{c:'#ff7070',d:T('t7_2','Score 2 — Poor. Counted as Detractor in the net goodness calculation.')},
+  3:{c:'#ff7070',d:T('t7_3','Score 3 — Below average. Still a Detractor. The experience fell short of expectations.')},
+  4:{c:'#f0c040',d:T('t7_4','Score 4 — Passive. Excluded from net goodness — neither helps nor hurts.')},
+  5:{c:'#f0c040',d:T('t7_5','Score 5 — Passive. Acceptable but leaves no strong impression. Also excluded from net goodness.')},
+  6:{c:'#4de8a4',d:T('t7_6','Score 6 — Promoter. Counted positively in net goodness — adds to your score.')},
+  7:{c:'#4de8a4',d:T('t7_7','Score 7 — Excellent. Maximum positive contribution to the net goodness score.')}
+};
+document.querySelectorAll('#t7Row .t7b').forEach(btn=>{
+  btn.addEventListener('click',()=>{
+    document.querySelectorAll('#t7Row .t7b').forEach(b=>b.classList.remove('on'));
+    btn.classList.add('on');
+    const t=parseInt(btn.dataset.t),d=t7D[t];
+    const r=document.getElementById('t7Res');r.classList.add('on');
+    document.getElementById('t7RN').textContent=t+' / 7';
+    document.getElementById('t7RN').style.color=d.c;
+    document.getElementById('t7RD').textContent=d.d;
+  });
+});
+
+// ── DIM TABS ─────────────────────────────────────────────────
+function showDim(d){
+  document.querySelectorAll('.dp').forEach(p=>p.classList.remove('on'));
+  document.querySelectorAll('.dtab').forEach(t=>t.classList.remove('ts','te','tm'));
+  const map={s:['dpS','tabS','ts'],e:['dpE','tabE','te'],m:['dpM','tabM','tm']};
+  document.getElementById(map[d][0]).classList.add('on');
+  document.getElementById(map[d][1]).classList.add(map[d][2]);
+}
+
+// ── DIM SLIDERS ───────────────────────────────────────────────
+const dimMsg={
+  S:['Score 1 (Detractor) — Complete failure. Customer could not accomplish their goal. Directly lowers your Success net goodness.',
+     'Score 2 (Detractor) — Very poor. Most customers fail. Core experience is broken.',
+     'Score 3 (Detractor) — Below average. Many struggle. Counted as Detractor in net goodness.',
+     'Score 4 (Passive) — Excluded from net goodness. Customers partially succeed. Functional but with gaps.',
+     'Score 5 (Passive) — Excluded from net goodness. Most customers achieve goals with some effort.',
+     'Score 6 (Promoter) — Counts positively in net goodness. Most customers succeed.',
+     'Score 7 (Promoter) — Maximum contribution to net goodness. Customers reliably accomplish goals.'],
+  E:['Score 1 (Detractor) — Extreme friction. Directly lowers Effort net goodness. Urgent operational review needed.',
+     'Score 2 (Detractor) — Very high friction. Counted as Detractor. Audit IVR flows and transfer rates.',
+     'Score 3 (Detractor) — High friction. Counted as Detractor in Effort calculation.',
+     'Score 4 (Passive) — Excluded from net goodness. Manageable but not smooth.',
+     'Score 5 (Passive) — Excluded from net goodness. Adequate but not effortless.',
+     'Score 6 (Promoter) — Contributes positively to Effort net goodness. Most find it easy.',
+     'Score 7 (Promoter) — Maximum Effort contribution. Effortless. A competitive advantage.'],
+  M:['Score 1 (Detractor) — Very negative feeling. Directly lowers Emotion net goodness. Cultural change likely needed.',
+     'Score 2 (Detractor) — Negative. Counted as Detractor. Empathy training needed.',
+     'Score 3 (Detractor) — Below average. Counted as Detractor in Emotion net goodness.',
+     'Score 4 (Passive) — Excluded from net goodness. Neutral — functional but not warm.',
+     'Score 5 (Passive) — Excluded from net goodness. Acceptable. Identify emotional low points.',
+     'Score 6 (Promoter) — Contributes positively to Emotion net goodness. Most interactions feel positive.',
+     'Score 7 (Promoter) — Maximum Emotion contribution. Customers feel genuinely valued.']
+};
+function updDim(dim){
+  const v=parseInt(document.getElementById('sr'+dim).value);
+  const pct=Math.round(((v-1)/6)*100);
+  const grp=v<=3?'Detractor':v<=5?'Passive':'Promoter';
+  const col={S:{det:'var(--blue)',pas:'#5580cc',pro:'var(--blue)'},E:{det:'#0a7048',pas:'#2a9060',pro:'#0a7048'},M:{det:'var(--orange)',pas:'#cc6030',pro:'var(--orange)'}}[dim];
+  const barC={S:'linear-gradient(90deg,#2445B1,#7aB4FF)',E:'linear-gradient(90deg,#23D18A,#80ffcc)',M:'linear-gradient(90deg,#FF7C51,#ffb89a)'}[dim];
+  const dimC={S:'var(--blue)',E:'#0a7048',M:'var(--orange)'}[dim];
+  document.getElementById('dn'+dim).textContent=v+' / 7 — '+grp;
+  document.getElementById('dn'+dim).style.color=dimC;
+  document.getElementById('db'+dim).style.background=barC;
+  document.getElementById('db'+dim).style.width=pct+'%';
+  document.getElementById('di'+dim).textContent=dimMsg[dim][v-1];
+}
+
+// ── SCENARIO TABS ─────────────────────────────────────────────
+function showSc(btn,id){
+  document.querySelectorAll('.sct').forEach(t=>t.classList.remove('on'));
+  document.querySelectorAll('.scp').forEach(p=>p.classList.remove('on'));
+  btn.classList.add('on');
+  document.getElementById(id).classList.add('on');
+}
+
+// ── QUIZ ──────────────────────────────────────────────────────
+const quizDataByLang={
+  en:[
+  {q:"On the NPS scale, a score of 8 means the customer is a…",opts:["Detractor","Passive","Promoter","Neutral"],ans:1,fb:"Score 7–8 = Passive. Satisfied but not enthusiastic — they are not counted in the NPS formula."},
+  {q:"How is the NPS calculated?",opts:["% Promoters + % Passives","% Promoters − % Detractors","Average of all scores","% Promoters × % Detractors"],ans:1,fb:"NPS = % Promoters (9–10) minus % Detractors (0–6). Passives are completely excluded from the calculation."},
+  {q:"Temkin Experience Ratings use a ___-point scale for each dimension.",opts:["5","10","7","3"],ans:2,fb:"Temkin uses a 7-point scale. Scores 1–3 = Detractor, 4–5 = Passive, 6–7 = Promoter. The net goodness = %Promoters − %Detractors."},
+  {q:"In Temkin, scores of 4 or 5 on a dimension are counted as…",opts:["Detractors","Promoters","Passives — excluded from the score","Negatives"],ans:2,fb:"Passives (4–5) are excluded from the net goodness calculation — just like in NPS. Only Detractors (1–3) and Promoters (6–7) count."},
+  {q:"The overall Temkin Experience Rating is calculated by…",opts:["Weighting Emotion twice as much","Taking the highest dimension score","Averaging the three dimension net goodness percentages","Subtracting the lowest from the highest"],ans:2,fb:"The overall TxR score is the simple average of the three 'net goodness' percentages (Success, Effort, Emotion). No dimension is weighted more than another."},
+  {q:"NPS and Temkin Experience Ratings have a Pearson correlation of approximately…",opts:["0.34","0.61","0.87","0.99"],ans:2,fb:"XM Institute research (2023) found a Pearson correlation of 0.87 across 319 companies — highly correlated, but distinct metrics that measure different aspects of experience."},
+  {q:"Your NPS drops by 8 points but your Temkin Success and Effort scores are stable. The most likely cause is…",opts:["Product failure","Pricing issues","An Emotion dimension problem — frontline tone changed","Website performance degradation"],ans:2,fb:"When Success and Effort are stable but NPS drops, the Emotion dimension is the most likely culprit. Temkin helps isolate this — which is exactly why it acts as a diagnostic layer alongside NPS."},
+  {q:"Which statement about the Temkin Emotion dimension is TRUE?",opts:["It is less important in B2B sectors","It is the most frequently underestimated dimension","It is weighted twice as much as Success","It uses a 10-point scale"],ans:1,fb:"Emotion is frequently underestimated — especially in technical and B2B sectors — yet it is often the strongest predictor of loyalty. It uses the same 1–7 scale as the other dimensions."},
+  {q:"A customer rates an interaction 3 out of 7 on the Temkin Effort dimension. What does this mean?",opts:["They are a Promoter on this dimension","They are excluded from the net goodness calculation","They are a Detractor on this dimension — and this lowers the net goodness score","They are a Passive on this dimension"],ans:2,fb:"Score 3 = Detractor (1–3 zone). This customer counts negatively in the Effort net goodness percentage: %Promoters (6–7) − %Detractors (1–3) = net goodness. Their score reduces your Effort rating."},
+  {q:"Which of the following is the BEST practical use of NPS + Temkin together?",opts:["Replace all qualitative research with two numbers","Use NPS as a loyalty signal and Temkin to diagnose which dimension explains the score","Only measure Temkin — it is more detailed","Use NPS for internal teams and Temkin only for leadership"],ans:1,fb:"NPS is the compass — it signals loyalty movement. Temkin is the map — it shows which dimension (Success, Effort, or Emotion) is driving the change. Together they are far more actionable than either metric alone."}
+  ],
+  nl:[
+  {q:"Op de NPS-schaal betekent een score van 8 dat de klant een... is",opts:["Detractor","Passief","Promoter","Neutraal"],ans:1,fb:"Score 7-8 = Passief. Tevreden maar niet enthousiast; deze groep telt niet mee in de NPS-formule."},
+  {q:"Hoe wordt de NPS berekend?",opts:["% Promoters + % Passieven","% Promoters - % Detractors","Gemiddelde van alle scores","% Promoters x % Detractors"],ans:1,fb:"NPS = % Promoters (9-10) min % Detractors (0-6). Passieven worden volledig uitgesloten."},
+  {q:"Temkin Experience Ratings gebruiken een ___-puntsschaal per dimensie.",opts:["5","10","7","3"],ans:2,fb:"Temkin gebruikt een 7-puntsschaal. Scores 1-3 = Detractor, 4-5 = Passief, 6-7 = Promoter."},
+  {q:"In Temkin worden scores van 4 of 5 op een dimensie geteld als…",opts:["Detractors","Promoters","Passieven - uitgesloten van de score","Negatieven"],ans:2,fb:"Passieven (4-5) worden uitgesloten van de net goodness berekening, net als bij NPS."},
+  {q:"De totale Temkin Experience Rating wordt berekend door…",opts:["Emotie dubbel te wegen","De hoogste dimensiescore te nemen","Het gemiddelde van de drie net goodness percentages","De laagste van de hoogste af te trekken"],ans:2,fb:"De totale TxR-score is het eenvoudige gemiddelde van Success, Effort en Emotion net goodness percentages."},
+  {q:"NPS en Temkin Experience Ratings hebben een Pearson-correlatie van ongeveer…",opts:["0.34","0.61","0.87","0.99"],ans:2,fb:"Onderzoek van XM Institute (2023) vond een Pearson-correlatie van 0.87 over 319 bedrijven."},
+  {q:"Je NPS daalt met 8 punten, maar Temkin Success en Effort blijven stabiel. Waarschijnlijkste oorzaak?",opts:["Productfout","Prijsproblemen","Een probleem in de Emotie-dimensie","Slechte websiteprestaties"],ans:2,fb:"Als Success en Effort stabiel blijven maar NPS daalt, is Emotie vaak de oorzaak."},
+  {q:"Welke uitspraak over de Temkin Emotie-dimensie is WAAR?",opts:["Minder belangrijk in B2B","Wordt het vaakst onderschat","Wordt dubbel gewogen t.o.v. Success","Gebruikt een 10-puntsschaal"],ans:1,fb:"Emotie wordt vaak onderschat, vooral in technische en B2B-contexten, maar is vaak een sterke voorspeller van loyaliteit."},
+  {q:"Een klant geeft een 3 op 7 op de Temkin Effort-dimensie. Wat betekent dat?",opts:["Promoter op deze dimensie","Uitgesloten van net goodness","Detractor op deze dimensie en verlaagt net goodness","Passief op deze dimensie"],ans:2,fb:"Score 3 = Detractor (1-3). Deze score telt negatief mee in Effort net goodness."},
+  {q:"Wat is de BESTE praktische toepassing van NPS + Temkin samen?",opts:["Alle kwalitatieve research vervangen door twee cijfers","NPS gebruiken als loyaliteitssignaal en Temkin voor diagnose van de drijvende dimensie","Alleen Temkin meten omdat het gedetailleerder is","NPS voor teams en Temkin alleen voor leiderschap"],ans:1,fb:"NPS is het kompas; Temkin is de kaart. Samen zijn ze veel beter bruikbaar dan elk afzonderlijk."}
+  ],
+  es:[
+  {q:"En la escala NPS, una puntuacion de 8 significa que el cliente es…",opts:["Detractor","Pasivo","Promotor","Neutral"],ans:1,fb:"Una puntuacion de 7-8 = Pasivo. Estan satisfechos pero no cuentan en la formula NPS."},
+  {q:"Como se calcula el NPS?",opts:["% Promotores + % Pasivos","% Promotores - % Detractores","Promedio de todas las puntuaciones","% Promotores x % Detractores"],ans:1,fb:"NPS = % Promotores (9-10) menos % Detractores (0-6). Los Pasivos se excluyen."},
+  {q:"Temkin Experience Ratings usa una escala de ___ puntos por dimension.",opts:["5","10","7","3"],ans:2,fb:"Temkin utiliza una escala de 7 puntos. 1-3 = Detractor, 4-5 = Pasivo, 6-7 = Promotor."},
+  {q:"En Temkin, las puntuaciones 4 o 5 se consideran…",opts:["Detractores","Promotores","Pasivos - excluidos del calculo","Negativos"],ans:2,fb:"Los Pasivos (4-5) se excluyen del net goodness, igual que en NPS."},
+  {q:"La puntuacion total de Temkin se calcula…",opts:["Dando doble peso a Emocion","Tomando la dimension mas alta","Promediando los tres porcentajes de net goodness","Restando la mas baja de la mas alta"],ans:2,fb:"La puntuacion total es el promedio simple de Success, Effort y Emotion."},
+  {q:"NPS y Temkin tienen una correlacion de Pearson aproximada de…",opts:["0.34","0.61","0.87","0.99"],ans:2,fb:"Investigacion de XM Institute (2023) reporto una correlacion de 0.87 en 319 empresas."},
+  {q:"Tu NPS cae 8 puntos, pero Success y Effort de Temkin estan estables. Causa mas probable…",opts:["Fallo de producto","Problemas de precio","Problema en la dimension Emocion","Bajo rendimiento web"],ans:2,fb:"Si Success y Effort se mantienen estables pero NPS cae, la causa suele estar en Emocion."},
+  {q:"Que afirmacion sobre la dimension Emocion de Temkin es VERDADERA?",opts:["Es menos importante en B2B","Es la dimension mas subestimada","Se pondera al doble que Success","Usa escala de 10 puntos"],ans:1,fb:"Emocion suele subestimarse, especialmente en sectores tecnicos y B2B, pero predice lealtad con fuerza."},
+  {q:"Un cliente califica con 3 de 7 en la dimension Effort. Que significa?",opts:["Es Promotor en esta dimension","Se excluye del net goodness","Es Detractor y reduce el net goodness","Es Pasivo en esta dimension"],ans:2,fb:"Puntuacion 3 = Detractor (1-3). Cuenta negativamente en Effort net goodness."},
+  {q:"Cual es el MEJOR uso practico de NPS + Temkin juntos?",opts:["Sustituir toda investigacion cualitativa","Usar NPS como senal de lealtad y Temkin para diagnosticar la dimension","Medir solo Temkin","Usar NPS para equipos y Temkin solo para liderazgo"],ans:1,fb:"NPS es la brujula y Temkin es el mapa. Juntos son mucho mas accionables."}
+  ],
+  fr:[
+  {q:"Sur l echelle NPS, une note de 8 signifie que le client est…",opts:["Detracteur","Passif","Promoteur","Neutre"],ans:1,fb:"Un score de 7-8 = Passif. Satisfait mais non enthousiaste - il ne compte pas dans la formule NPS."},
+  {q:"Comment le NPS est-il calcule?",opts:["% Promoteurs + % Passifs","% Promoteurs - % Detracteurs","Moyenne de tous les scores","% Promoteurs x % Detracteurs"],ans:1,fb:"NPS = % Promoteurs (9-10) moins % Detracteurs (0-6). Les Passifs sont exclus."},
+  {q:"Temkin Experience Ratings utilise une echelle de ___ points par dimension.",opts:["5","10","7","3"],ans:2,fb:"Temkin utilise une echelle a 7 points. 1-3 = Detracteur, 4-5 = Passif, 6-7 = Promoteur."},
+  {q:"Dans Temkin, les scores 4 ou 5 sont classes comme…",opts:["Detracteurs","Promoteurs","Passifs - exclus du calcul","Negatifs"],ans:2,fb:"Les Passifs (4-5) sont exclus du calcul de net goodness, comme dans le NPS."},
+  {q:"Le score global Temkin est calcule en…",opts:["Doublant le poids de l Emotion","Prenant la dimension la plus elevee","Moyennant les trois pourcentages net goodness","Soustrayant la plus basse de la plus haute"],ans:2,fb:"Le score global TxR est la moyenne simple de Success, Effort et Emotion."},
+  {q:"NPS et Temkin ont une correlation de Pearson d environ…",opts:["0.34","0.61","0.87","0.99"],ans:2,fb:"La recherche XM Institute (2023) a trouve une correlation de 0.87 sur 319 entreprises."},
+  {q:"Votre NPS baisse de 8 points mais Success et Effort restent stables. Cause la plus probable…",opts:["Defaillance produit","Problemes de prix","Probleme sur la dimension Emotion","Degradation du site web"],ans:2,fb:"Si Success et Effort sont stables mais NPS baisse, la dimension Emotion est souvent en cause."},
+  {q:"Quelle affirmation sur la dimension Emotion de Temkin est VRAIE?",opts:["Moins importante en B2B","La plus souvent sous-estimee","Ponderee deux fois plus que Success","Utilise une echelle de 10 points"],ans:1,fb:"Emotion est souvent sous-estimee, surtout en B2B technique, mais predit fortement la fidelite."},
+  {q:"Un client note 3/7 sur la dimension Effort. Que signifie ce score?",opts:["Promoteur sur cette dimension","Exclu du net goodness","Detracteur sur cette dimension et baisse le net goodness","Passif sur cette dimension"],ans:2,fb:"Score 3 = Detracteur (1-3). Cela compte negativement dans le net goodness Effort."},
+  {q:"Quel est le MEILLEUR usage pratique de NPS + Temkin ensemble?",opts:["Remplacer toute recherche qualitative","Utiliser NPS comme signal de fidelite et Temkin pour diagnostiquer la dimension","Mesurer uniquement Temkin","Utiliser NPS pour les equipes et Temkin seulement pour la direction"],ans:1,fb:"NPS est la boussole et Temkin la carte. Ensemble ils sont bien plus actionnables."}
+  ]
+};
+
+function getQuizData(){
+  return quizDataByLang[curLang]||quizDataByLang.en;
+}
+
+let qIdx=0,score=0,answered=false;
+function startQuiz(){
+  qIdx=0;score=0;answered=false;
+  document.getElementById('qzScore').classList.remove('show');
+  document.getElementById('qzCard').style.display='block';
+  renderQ();
+}
+function renderQ(){
+  answered=false;
+  const quizData=getQuizData();
+  const q=quizData[qIdx];
+  document.getElementById('qzBar').style.width=(qIdx/quizData.length*100)+'%';
+  document.getElementById('qzNum').textContent=T('qz_question_of','Question {n} of {t}').replace('{n}',qIdx+1).replace('{t}',quizData.length);
+  document.getElementById('qzQ').textContent=q.q;
+  document.getElementById('qzFB').className='qz-feedback';
+  document.getElementById('qzFB').innerHTML='';
+  document.getElementById('qzNext').classList.remove('show');
+  const opts=document.getElementById('qzOpts');
+  opts.innerHTML='';
+  q.opts.forEach((o,i)=>{
+    const btn=document.createElement('button');
+    btn.className='qz-opt';btn.textContent=o;
+    btn.onclick=()=>answer(i);
+    opts.appendChild(btn);
+  });
+}
+function answer(i){
+  if(answered)return;answered=true;
+  const q=getQuizData()[qIdx];
+  const opts=document.querySelectorAll('.qz-opt');
+  opts.forEach((o,idx)=>{
+    o.classList.add('disabled');
+    if(idx===q.ans)o.classList.add('correct');
+    else if(idx===i)o.classList.add('wrong');
+  });
+  const fb=document.getElementById('qzFB');
+  if(i===q.ans){
+    score++;fb.className='qz-feedback ok show';
+    fb.innerHTML='<strong>✓ '+T('qz_correct','Correct!')+'</strong> '+q.fb;
+  } else {
+    fb.className='qz-feedback bad show';
+    fb.innerHTML='<strong>✗ '+T('qz_not_quite','Not quite.')+'</strong> '+q.fb;
+  }
+  document.getElementById('qzNext').classList.add('show');
+}
+function nextQ(){
+  qIdx++;
+  if(qIdx>=getQuizData().length){showScore();return;}
+  renderQ();
+}
+function showScore(){
+  const quizData=getQuizData();
+  document.getElementById('qzBar').style.width='100%';
+  document.getElementById('qzCard').style.display='none';
+  const s=document.getElementById('qzScore');s.classList.add('show');
+  document.getElementById('qzScoreBig').textContent=score+'/'+quizData.length;
+  const pct=score/quizData.length;
+  let lbl,sub;
+  if(pct>=.9){lbl=T('qz_score_outstanding_lbl','Outstanding! 🏆');sub=T('qz_score_outstanding_sub','You have mastered both NPS and Temkin. Time to apply this in practice.');}
+  else if(pct>=.7){lbl=T('qz_score_well_lbl','Well done! ✓');sub=T('qz_score_well_sub','Solid understanding. Review the sections where you hesitated to sharpen your knowledge.');}
+  else if(pct>=.5){lbl=T('qz_score_start_lbl','Good start →');sub=T('qz_score_start_sub','A reasonable base. We recommend re-reading the Temkin 7-point scale section and the Combined view.');}
+  else{lbl=T('qz_score_keep_lbl','Keep learning ↺');sub=T('qz_score_keep_sub','No worries — revisit the guide above and try again. The concepts become clear quickly.');}
+  document.getElementById('qzScoreLbl').textContent=lbl;
+  document.getElementById('qzScoreSub').textContent=sub;
+}
+startQuiz();
+
+
+// ── MOBILE NAV ────────────────────────────────────────────────
+function toggleMobMenu(){
+  const nav=document.getElementById('mobNav');
+  const btn=document.getElementById('mobBtn');
+  nav.classList.toggle('open');
+  const isOpen=nav.classList.contains('open');
+  btn.querySelectorAll('span')[0].style.transform=isOpen?'rotate(45deg) translate(5px,5px)':'';
+  btn.querySelectorAll('span')[1].style.opacity=isOpen?'0':'1';
+  btn.querySelectorAll('span')[2].style.transform=isOpen?'rotate(-45deg) translate(5px,-5px)':'';
+}
+function mobileGoto(id){
+  document.getElementById('mobNav').classList.remove('open');
+  document.getElementById('mobBtn').querySelectorAll('span').forEach(s=>{s.style.transform='';s.style.opacity='1';});
+  document.getElementById(id).scrollIntoView({behavior:'smooth'});
+}
+function setLangMob(btn,l){
+  setLangInner(l);
+  document.querySelectorAll('.mob-lang-btn').forEach(b=>b.classList.remove('active'));
+  btn.classList.add('active');
+  // also sync desktop lang buttons
+  document.querySelectorAll('.lang-sel').forEach(b=>{b.style.borderColor='';b.style.color='';});
+}
+// Refactor setLang to call shared inner function
+function setLangInner(l){
+  curLang=l;
+  document.querySelectorAll('[data-key]').forEach(el=>{
+    const k=el.dataset.key;
+    if(langs[l]&&langs[l][k]!==undefined) el.textContent=langs[l][k];
+  });
+  // Also update mobile nav buttons text
+  document.querySelectorAll('.mob-nb[data-key]').forEach(el=>{
+    const k=el.dataset.key;
+    if(langs[l]&&langs[l][k]!==undefined) el.textContent=langs[l][k];
+  });
+  // Keep quiz content in sync with selected language.
+  if(document.getElementById('qzScore').classList.contains('show')) showScore();
+  else renderQ();
+}
+
+</script>
+</body>
+</html>
